@@ -1,7 +1,13 @@
 .idea/
-target/
+.bloop/
+.metals/
 .bsp/
+.vscode/
+
+target/
 project/target/
+project/.bloop/
+
 
 *.class
 *.log
