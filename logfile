@@ -1,0 +1,137 @@
+2024-09-22 11:59:46.612 CEST [27522] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-22 11:59:46.612 CEST [27522] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-22 11:59:46.615 CEST [27522] FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied
+2024-09-22 11:59:46.616 CEST [27522] LOG:  database system is shut down
+2024-09-22 12:17:26.383 CEST [31831] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-22 12:17:26.384 CEST [31831] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-22 12:17:26.387 CEST [31831] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-09-22 12:17:26.397 CEST [31834] LOG:  database system was interrupted; last known up at 2024-09-22 09:26:52 CEST
+2024-09-22 12:17:26.559 CEST [31834] LOG:  database system was not properly shut down; automatic recovery in progress
+2024-09-22 12:17:26.563 CEST [31834] LOG:  redo starts at 0/1DC21C0
+2024-09-22 12:17:26.563 CEST [31834] LOG:  invalid record length at 0/1DC22A8: expected at least 24, got 0
+2024-09-22 12:17:26.563 CEST [31834] LOG:  redo done at 0/1DC2270 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2024-09-22 12:17:26.568 CEST [31832] LOG:  checkpoint starting: end-of-recovery immediate wait
+2024-09-22 12:17:26.585 CEST [31832] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.003 s, total=0.019 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1DC22A8, redo lsn=0/1DC22A8
+2024-09-22 12:17:26.588 CEST [31831] LOG:  database system is ready to accept connections
+2024-09-22 12:18:58.026 CEST [32200] FATAL:  database "anabra" does not exist
+2024-09-22 12:20:05.533 CEST [32399] ERROR:  syntax error at or near "/" at character 1
+2024-09-22 12:20:05.533 CEST [32399] STATEMENT:  /d
+	;
+2024-09-22 12:25:52.678 CEST [33833] FATAL:  role "asd" does not exist
+2024-09-22 12:26:11.812 CEST [33910] FATAL:  role "postgres" does not exist
+2024-09-22 12:26:31.719 CEST [33991] FATAL:  role "asd" is not permitted to log in
+2024-09-22 12:27:26.787 CEST [31832] LOG:  checkpoint starting: time
+2024-09-22 12:27:27.348 CEST [31832] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.510 s, sync=0.013 s, total=0.561 s; sync files=6, longest=0.007 s, average=0.003 s; distance=3 kB, estimate=3 kB; lsn=0/1DC3028, redo lsn=0/1DC2FF0
+2024-09-22 12:28:59.958 CEST [34597] FATAL:  role "asd" is not permitted to log in
+2024-09-22 12:30:43.825 CEST [34885] ERROR:  permission denied for table cities
+2024-09-22 12:30:43.825 CEST [34885] STATEMENT:  SELECT * from cities;
+2024-09-22 12:32:26.376 CEST [31832] LOG:  checkpoint starting: time
+2024-09-22 12:32:27.131 CEST [31832] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.711 s, sync=0.012 s, total=0.755 s; sync files=6, longest=0.008 s, average=0.002 s; distance=4 kB, estimate=4 kB; lsn=0/1DC40C0, redo lsn=0/1DC4088
+2024-09-22 12:40:24.820 CEST [31831] LOG:  received fast shutdown request
+2024-09-22 12:40:24.823 CEST [31831] LOG:  aborting any active transactions
+2024-09-22 12:40:24.825 CEST [31831] LOG:  background worker "logical replication launcher" (PID 31838) exited with exit code 1
+2024-09-22 12:40:24.825 CEST [31832] LOG:  shutting down
+2024-09-22 12:40:24.828 CEST [31832] LOG:  checkpoint starting: shutdown immediate
+2024-09-22 12:40:24.839 CEST [31832] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.013 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=3 kB; lsn=0/1DC4170, redo lsn=0/1DC4170
+2024-09-22 12:40:24.842 CEST [31831] LOG:  database system is shut down
+2024-09-22 12:42:48.938 CEST [37830] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-22 12:42:48.938 CEST [37830] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-22 12:42:48.941 CEST [37830] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-09-22 12:42:48.948 CEST [37833] LOG:  database system was shut down at 2024-09-22 12:40:24 CEST
+2024-09-22 12:42:48.954 CEST [37830] LOG:  database system is ready to accept connections
+2024-09-22 12:47:49.048 CEST [37831] LOG:  checkpoint starting: time
+2024-09-22 12:47:49.098 CEST [37831] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.013 s, sync=0.006 s, total=0.051 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1DC4258, redo lsn=0/1DC4220
+2024-09-22 12:55:29.746 CEST [40033] ERROR:  invalid input syntax for type date: "Date,Open,High,Low,Close,Adj Close,Volume"
+2024-09-22 12:55:29.746 CEST [40033] CONTEXT:  COPY nflx, line 1, column date: "Date,Open,High,Low,Close,Adj Close,Volume"
+2024-09-22 12:55:29.746 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' ;
+2024-09-22 13:13:58.292 CEST [40033] ERROR:  extra data after last expected column
+2024-09-22 13:13:58.292 CEST [40033] CONTEXT:  COPY nflx, line 1: "Date,Open,High,Low,Close,Adj Close,Volume"
+2024-09-22 13:13:58.292 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',');
+2024-09-22 13:17:11.850 CEST [40033] ERROR:  syntax error at or near "(" at character 93
+2024-09-22 13:17:11.850 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',') (HEADER true);
+2024-09-22 13:17:23.078 CEST [40033] ERROR:  syntax error at or near "HEADER" at character 93
+2024-09-22 13:17:23.078 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',') HEADER true;
+2024-09-22 13:17:41.693 CEST [40033] ERROR:  syntax error at or near "true" at character 93
+2024-09-22 13:17:41.693 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',') true;
+2024-09-22 13:20:55.607 CEST [40033] ERROR:  syntax error at or near "HEADER" at character 92
+2024-09-22 13:20:55.607 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',' HEADER true);
+2024-09-22 13:21:12.376 CEST [40033] ERROR:  extra data after last expected column
+2024-09-22 13:21:12.376 CEST [40033] CONTEXT:  COPY nflx, line 2: "2024-08-12,631.000000,639.000000,627.070007,633.140015,633.140015,2331700"
+2024-09-22 13:21:12.376 CEST [40033] STATEMENT:  COPY nflx FROM '/mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv' (DELIMITER ',', HEADER true);
+2024-09-22 13:30:27.418 CEST [40033] ERROR:  syntax error at or near "volume" at character 38
+2024-09-22 13:30:27.418 CEST [40033] STATEMENT:  ALTER TABLE nflx ADD adj_close real, volume real;
+2024-09-22 13:32:49.723 CEST [37831] LOG:  checkpoint starting: time
+2024-09-22 13:32:50.369 CEST [37831] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.611 s, sync=0.011 s, total=0.647 s; sync files=7, longest=0.007 s, average=0.002 s; distance=18 kB, estimate=18 kB; lsn=0/1DC8DC0, redo lsn=0/1DC8D88
+2024-09-22 13:35:44.101 CEST [40033] ERROR:  function round(real, integer) does not exist at character 8
+2024-09-22 13:35:44.101 CEST [40033] HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+2024-09-22 13:35:44.101 CEST [40033] STATEMENT:  SELECT ROUND(adj_close,4) FROM nflx;
+2024-09-22 14:02:50.137 CEST [40033] ERROR:  syntax error at or near "nflx" at character 6
+2024-09-22 14:02:50.137 CEST [40033] STATEMENT:  drop nflx;
+2024-09-22 14:04:03.214 CEST [40033] ERROR:  syntax error at or near ";" at character 32
+2024-09-22 14:04:03.214 CEST [40033] STATEMENT:  create table NFLX (
+	  date date;
+	  open DECIMAL,
+	  high DECIMAL,
+	  low DECIMAL,
+	  close DECIMAL,
+	  adj_close DECIMAL,
+	  volume DECIMAL
+	);
+2024-09-22 14:07:50.066 CEST [37831] LOG:  checkpoint starting: time
+2024-09-22 14:07:52.535 CEST [37831] LOG:  checkpoint complete: wrote 25 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.420 s, sync=0.025 s, total=2.470 s; sync files=22, longest=0.009 s, average=0.002 s; distance=130 kB, estimate=130 kB; lsn=0/1DE96A8, redo lsn=0/1DE9670
+2024-09-22 14:09:47.323 CEST [40033] ERROR:  syntax error at or near "/" at character 16
+2024-09-22 14:09:47.323 CEST [40033] STATEMENT:  COPY nflx FROM /mnt/c/Users/peter/OneDrive/Desktop/kata/CS/other/NFLX.csv (DELIMITER ',', HEADER true);
+2024-09-22 14:12:50.575 CEST [37831] LOG:  checkpoint starting: time
+2024-09-22 14:12:50.801 CEST [37831] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.204 s, sync=0.008 s, total=0.227 s; sync files=3, longest=0.006 s, average=0.003 s; distance=0 kB, estimate=117 kB; lsn=0/1DE9918, redo lsn=0/1DE98E0
+2024-09-23 10:52:09.667 CEST [191361] FATAL:  lock file "postmaster.pid" already exists
+2024-09-23 10:52:09.667 CEST [191361] HINT:  Is another postmaster (PID 37830) running in data directory "/usr/local/pgsql/data"?
+2024-09-23 10:52:30.206 CEST [37830] LOG:  received fast shutdown request
+2024-09-23 10:52:30.209 CEST [37830] LOG:  aborting any active transactions
+2024-09-23 10:52:30.210 CEST [37830] LOG:  background worker "logical replication launcher" (PID 37836) exited with exit code 1
+2024-09-23 10:52:30.211 CEST [37831] LOG:  shutting down
+2024-09-23 10:52:30.214 CEST [37831] LOG:  checkpoint starting: shutdown immediate
+2024-09-23 10:52:30.225 CEST [37831] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.014 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=105 kB; lsn=0/1DE99C8, redo lsn=0/1DE99C8
+2024-09-23 10:52:30.228 CEST [37830] LOG:  database system is shut down
+2024-09-23 10:52:59.706 CEST [191594] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-23 10:52:59.706 CEST [191594] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-23 10:52:59.709 CEST [191594] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-09-23 10:52:59.715 CEST [191597] LOG:  database system was shut down at 2024-09-23 10:52:30 CEST
+2024-09-23 10:52:59.720 CEST [191594] LOG:  database system is ready to accept connections
+2024-09-23 10:57:59.815 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 10:57:59.955 CEST [191595] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.107 s, sync=0.011 s, total=0.141 s; sync files=3, longest=0.006 s, average=0.004 s; distance=0 kB, estimate=0 kB; lsn=0/1DE9AB0, redo lsn=0/1DE9A78
+2024-09-23 11:13:00.080 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 11:13:00.203 CEST [191595] LOG:  checkpoint complete: wrote 2 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.103 s, sync=0.005 s, total=0.124 s; sync files=2, longest=0.004 s, average=0.003 s; distance=1 kB, estimate=1 kB; lsn=0/1DE9EE0, redo lsn=0/1DE9EA8
+2024-09-23 17:07:38.490 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 17:07:41.759 CEST [191595] LOG:  checkpoint complete: wrote 33 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.221 s, sync=0.026 s, total=3.270 s; sync files=30, longest=0.008 s, average=0.001 s; distance=151 kB, estimate=151 kB; lsn=0/1E0FB90, redo lsn=0/1E0FB58
+2024-09-23 17:11:32.639 CEST [192190] ERROR:  column "testtes" does not exist at character 25
+2024-09-23 17:11:32.639 CEST [192190] STATEMENT:  INSERT INTO url VALUES ("testtes", "https://github.com/Anabra/uerelius-minusculus/blob/main/tutorial/01-playing-with-postgres.md");
+2024-09-23 17:12:38.803 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 17:12:39.360 CEST [191595] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.511 s, sync=0.008 s, total=0.557 s; sync files=5, longest=0.006 s, average=0.002 s; distance=0 kB, estimate=136 kB; lsn=0/1E0FE18, redo lsn=0/1E0FDE0
+2024-09-23 17:17:38.452 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 17:17:38.679 CEST [191595] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.204 s, sync=0.007 s, total=0.227 s; sync files=3, longest=0.006 s, average=0.003 s; distance=0 kB, estimate=122 kB; lsn=0/1E10128, redo lsn=0/1E100F0
+2024-09-23 20:29:11.972 CEST [224402] ERROR:  column "handle" does not exist at character 25
+2024-09-23 20:29:11.972 CEST [224402] DETAIL:  There is a column named "handle" in table "url", but it cannot be referenced from this part of the query.
+2024-09-23 20:29:11.972 CEST [224402] STATEMENT:  INSERT into url VALUES (handle, url)
+2024-09-23 20:33:00.117 CEST [224526] ERROR:  value too long for type character varying(7)
+2024-09-23 20:33:00.117 CEST [224526] STATEMENT:  INSERT into url VALUES ('testHandle', 'testUrl')
+2024-09-23 20:34:07.279 CEST [224665] ERROR:  value too long for type character varying(7)
+2024-09-23 20:34:07.279 CEST [224665] STATEMENT:  INSERT into url VALUES ('testHandle', 'testUrl')
+2024-09-23 20:41:06.012 CEST [224979] ERROR:  duplicate key value violates unique constraint "url_pkey"
+2024-09-23 20:41:06.012 CEST [224979] DETAIL:  Key (handle)=(testest) already exists.
+2024-09-23 20:41:06.012 CEST [224979] STATEMENT:  INSERT INTO url VALUES ('testest', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+2024-09-23 20:42:41.486 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 20:42:41.638 CEST [191595] LOG:  checkpoint complete: wrote 2 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.107 s, sync=0.009 s, total=0.152 s; sync files=2, longest=0.008 s, average=0.005 s; distance=0 kB, estimate=110 kB; lsn=0/1E103F0, redo lsn=0/1E103B8
+2024-09-23 21:51:17.334 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 21:51:17.577 CEST [191595] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.208 s, sync=0.009 s, total=0.243 s; sync files=3, longest=0.007 s, average=0.003 s; distance=0 kB, estimate=99 kB; lsn=0/1E10780, redo lsn=0/1E10748
+2024-09-23 22:06:09.708 CEST [228560] ERROR:  duplicate key value violates unique constraint "url_pkey"
+2024-09-23 22:06:09.708 CEST [228560] DETAIL:  Key (handle)=(testH) already exists.
+2024-09-23 22:06:09.708 CEST [228560] STATEMENT:  INSERT INTO url VALUES ('testH', 'testU')
+2024-09-23 22:06:17.777 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 22:06:17.923 CEST [191595] LOG:  checkpoint complete: wrote 2 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.108 s, sync=0.010 s, total=0.147 s; sync files=2, longest=0.008 s, average=0.005 s; distance=0 kB, estimate=89 kB; lsn=0/1E10A68, redo lsn=0/1E10A30
+2024-09-23 22:17:28.833 CEST [229285] ERROR:  operator does not exist: character varying == unknown at character 32
+2024-09-23 22:17:28.833 CEST [229285] HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+2024-09-23 22:17:28.833 CEST [229285] STATEMENT:  SELECT * FROM url WHERE handle == 'testH'
+2024-09-23 22:35:53.503 CEST [230190] ERROR:  column "testh" does not exist at character 55
+2024-09-23 22:35:53.503 CEST [230190] STATEMENT:  INSERT INTO url VALUES ('testH', 'testU') ON CONFLICT (testH) DO NOTHING
+2024-09-23 22:41:18.502 CEST [191595] LOG:  checkpoint starting: time
+2024-09-23 22:41:18.768 CEST [191595] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.209 s, sync=0.014 s, total=0.266 s; sync files=3, longest=0.010 s, average=0.005 s; distance=1 kB, estimate=80 kB; lsn=0/1E10E90, redo lsn=0/1E10E58
