@@ -3,36 +3,14 @@ import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
 
 
-// helper fns for opening/creating and closing conn, statement, resset
+// helper fn for getconn
 def connectToDB(): Connection = {
   val dbName = "mydb"
   val host = "localhost"
   val port = "5432"
   val url = s"jdbc:postgresql://${host}:${port}/${dbName}"
-
   val conn = DriverManager.getConnection(url)
-  println("connection created")
   conn
-}
-
-def closeDBConn(conn: Connection): Unit = {
-  conn.close()
-  println("connection closed")
-}
-
-def closeResSet(resSet: ResultSet): Unit = {
-  resSet.close()
-  println("result set closed")
-}
-
-def closeStatement(stmnt: PreparedStatement): Unit = {
-  stmnt.close()
-  println("statement closed")
-}
-
-def closeStatement(stmnt: Statement): Unit = {
-  stmnt.close()
-  println("statement closed")
 }
 
 //helper fns for querying
@@ -55,6 +33,32 @@ def insertRows(statement: PreparedStatement, rows: Seq[(String, String)]): Unit 
   println(s"${count} record(s) inserted to the table.")
 }
 
+def insertHandle(insertStatement: PreparedStatement, selectStatement: PreparedStatement, handle: String, url: String): Either[String, String] = {
+  insertStatement.setString(1, handle)
+  val insertedCount = insertStatement.executeUpdate()
+  if (insertedCount > 0) {
+    Right(handle)
+  } else {
+    lookup(selectStatement, handle) match {
+      case Some(urlFromDB) if urlFromDB == url => Left(handle)
+      case _ => insertHandle(insertStatement, selectStatement, encodeUrl(handle), url)
+    }
+  }
+}
+
+def lookup(selectStatement: PreparedStatement, handle: String): Option[String] = {
+  selectStatement.setString(1, handle)
+  val resSet = selectStatement.executeQuery()
+  if (resSet.next()) {
+    val res = Some(resSet.getString("url"))
+    resSet.close()
+    res
+  } else{
+    resSet.close() 
+    None
+  } 
+}
+
 //encoding related fns + vals
 val base62 = Base62.createInstance()
 
@@ -73,9 +77,9 @@ def printRecords(): Unit = {
 
   printUrlHandlePairs(resSet)
     
-  closeResSet(resSet)
-  closeStatement(stmnt)    
-  closeDBConn(conn)
+  resSet.close()
+  stmnt.close()
+  conn.close()
 }
 
 def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test2", "test2"))): Unit = {
@@ -83,21 +87,18 @@ def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test2", "test2"))): U
   val conn = connectToDB()
 
   val insertStmnt = conn.prepareStatement(s"INSERT INTO ${tableName} VALUES (?, ?) ON CONFLICT (handle) DO NOTHING;")
-  println("statement created")
 
   insertRows(insertStmnt, rows)
-  closeStatement(insertStmnt)
+  insertStmnt.close()
   
   val selectAllStmnt = conn.prepareStatement(s"SELECT * FROM ${tableName};")
-  println("statement created")
   val resSet = selectAllStmnt.executeQuery()
-  println("result set created")
 
   printUrlHandlePairs(resSet)
 
-  closeResSet(resSet)
-  closeStatement(selectAllStmnt) 
-  closeDBConn(conn)
+  resSet.close()
+  selectAllStmnt.close()
+  conn.close()
 }
 
 def insertAndPrintRows(handle: String, url: String): Unit = {
@@ -107,22 +108,35 @@ def insertAndPrintRows(handle: String, url: String): Unit = {
 
 def lookup(handle: String): Option[String] = {
   val conn = connectToDB()
-  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle LIKE '${handle}';")
-  println("statement created")
-
-  val resSet = stmnt.executeQuery()
-  println("result set created")
-
-  val res = if (resSet.next()) Some(resSet.getString("url")) else None
-    
-  closeResSet(resSet)
-  closeStatement(stmnt)    
-  closeDBConn(conn)
+  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = '${handle}';")
+  val res = lookup(stmnt, handle)
+  stmnt.close()
+  conn.close()
   res
 }
 
+def getHandle(url: String): Either[String, String] = {
+  val startHandle = encodeUrl(url)
+  val conn = connectToDB()
+  val inSertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, '${url}') ON CONFLICT (handle) DO NOTHING;")
+  val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
+  val finalHandle = insertHandle(inSertStatement, selectStatement, startHandle, url)
+
+  inSertStatement.close()
+  selectStatement.close()
+  conn.close()
+  finalHandle
+}
+
+//tests
+def shouldInsertNewEntry(url: String): Unit = {
+  val handle = encodeUrl(url)
+  if (lookup)
+  val insertRes = getHandle(url) 
+  val inserted = 
+}
 
 @main 
 def runFns(): Unit = {
-  println(lookup("test0"))
+  println(getHandle("dsaf"))
 }
