@@ -1,4 +1,6 @@
-import java.sql.*
+import java.sql.{Array => SqlArray, *}
+import org.apache.commons.codec.digest.DigestUtils
+import io.seruco.encoding.base62.Base62
 
 def printUrlHandlePairs(resSet: ResultSet): Unit = {
   println("printing handle - URL pairs:")
@@ -92,7 +94,12 @@ def insertAndPrintRows(handle: String, url: String): Unit = {
   insertAndPrintRows(Seq((handle, url)))
 }
 
+val base62 = Base62.createInstance()
+
+def encodeUrl(url: String): String = 
+  base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
+
 @main 
 def runFns(): Unit = {
-  insertAndPrintRows()
+
 }
