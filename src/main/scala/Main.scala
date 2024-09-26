@@ -129,14 +129,39 @@ def getHandle(url: String): Either[String, String] = {
 }
 
 //tests
-def shouldInsertNewEntry(url: String): Unit = {
-  val handle = encodeUrl(url)
-  if (lookup)
-  val insertRes = getHandle(url) 
-  val inserted = 
+def lookupUrl(url: String): Option[String] = {
+  val conn = connectToDB()
+  val startHandle = encodeUrl(url)
+  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?;")
+  val res = lookupUrl(stmnt, startHandle, url)
+  stmnt.close()
+  conn.close()
+  res
 }
+
+def lookupUrl(selectStatement: PreparedStatement, handle: String, url: String): Option[String] = {
+  selectStatement.setString(1, handle)
+  val resSet = selectStatement.executeQuery()
+  val handleExistsInDb = resSet.next()
+  if (handleExistsInDb && resSet.getString("url") == url) {
+    resSet.close()
+    Some(handle)
+  } else if (handleExistsInDb) {
+    resSet.close() 
+    lookupUrl(selectStatement, encodeUrl(handle), url)
+  } else {
+    None
+  } 
+}
+// def shouldInsertNewEntry(url: String): Unit = {
+//   val handle = encodeUrl(url)
+
+//   val insertRes = getHandle(url) 
+//   val inserted = ???
+//   ????
+// }
 
 @main 
 def runFns(): Unit = {
-  println(getHandle("dsaf"))
+  println(lookupUrl("tes1"))
 }
