@@ -2,25 +2,8 @@ import java.sql.{Array => SqlArray, *}
 import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
 
-def printUrlHandlePairs(resSet: ResultSet): Unit = {
-  println("printing handle - URL pairs:")
-  while (resSet.next()) {
-    val url = resSet.getString("url")
-    val handle = resSet.getString("handle")
-    println(s"hande: ${handle} - URL: ${url}")
-  }
-  println("all requested values printed")
-}
 
-def insertRows(statement: PreparedStatement, rows: Seq[(String, String)]): Unit = {
-  val count = rows.foldLeft (0) { case (curCount, (handle, url)) => 
-      statement.setString(1, handle)
-      statement.setString(2, url)
-      statement.executeUpdate() + curCount 
-  }
-  println(s"${count} record(s) inserted to the table.")
-}
-
+// helper fns for opening/creating and closing conn, statement, resset
 def connectToDB(): Connection = {
   val dbName = "mydb"
   val host = "localhost"
@@ -52,6 +35,33 @@ def closeStatement(stmnt: Statement): Unit = {
   println("statement closed")
 }
 
+//helper fns for querying
+def printUrlHandlePairs(resSet: ResultSet): Unit = {
+  println("printing handle - URL pairs:")
+  while (resSet.next()) {
+    val url = resSet.getString("url")
+    val handle = resSet.getString("handle")
+    println(s"hande: ${handle} - URL: ${url}")
+  }
+  println("all requested values printed")
+}
+
+def insertRows(statement: PreparedStatement, rows: Seq[(String, String)]): Unit = {
+  val count = rows.foldLeft (0) { case (curCount, (handle, url)) => 
+      statement.setString(1, handle)
+      statement.setString(2, url)
+      statement.executeUpdate() + curCount 
+  }
+  println(s"${count} record(s) inserted to the table.")
+}
+
+//encoding related fns + vals
+val base62 = Base62.createInstance()
+
+def encodeUrl(url: String): String = 
+  base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
+
+// fns wtat utilize the helper fns to execute querys
 def printRecords(): Unit = {
   val conn = connectToDB()
   val tableName = "url"
@@ -94,12 +104,25 @@ def insertAndPrintRows(handle: String, url: String): Unit = {
   insertAndPrintRows(Seq((handle, url)))
 }
 
-val base62 = Base62.createInstance()
 
-def encodeUrl(url: String): String = 
-  base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
+def lookup(handle: String): Option[String] = {
+  val conn = connectToDB()
+  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle LIKE '${handle}';")
+  println("statement created")
+
+  val resSet = stmnt.executeQuery()
+  println("result set created")
+
+  val res = if (resSet.next()) Some(resSet.getString("url")) else None
+    
+  closeResSet(resSet)
+  closeStatement(stmnt)    
+  closeDBConn(conn)
+  res
+}
+
 
 @main 
 def runFns(): Unit = {
-
+  println(lookup("test0"))
 }

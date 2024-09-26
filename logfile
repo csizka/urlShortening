@@ -135,3 +135,46 @@
 2024-09-23 22:35:53.503 CEST [230190] STATEMENT:  INSERT INTO url VALUES ('testH', 'testU') ON CONFLICT (testH) DO NOTHING
 2024-09-23 22:41:18.502 CEST [191595] LOG:  checkpoint starting: time
 2024-09-23 22:41:18.768 CEST [191595] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.209 s, sync=0.014 s, total=0.266 s; sync files=3, longest=0.010 s, average=0.005 s; distance=1 kB, estimate=80 kB; lsn=0/1E10E90, redo lsn=0/1E10E58
+2024-09-24 15:48:48.661 CEST [247965] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 15:48:48.661 CEST [247965] STATEMENT:  SELECT * FROM $1
+2024-09-24 15:54:55.468 CEST [248210] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 15:54:55.468 CEST [248210] STATEMENT:  SELECT * FROM $1
+2024-09-24 15:59:09.065 CEST [248367] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 15:59:09.065 CEST [248367] STATEMENT:  SELECT * FROM $1
+2024-09-24 16:00:36.009 CEST [248463] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 16:00:36.009 CEST [248463] STATEMENT:  SELECT * FROM $1
+2024-09-24 16:00:47.361 CEST [248534] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 16:00:47.361 CEST [248534] STATEMENT:  SELECT * FROM $1
+2024-09-24 16:03:32.982 CEST [192190] ERROR:  syntax error at or near "'url'" at character 16
+2024-09-24 16:03:32.982 CEST [192190] STATEMENT:  SELECT * FROM ('url');
+2024-09-24 16:04:46.786 CEST [248757] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 16:04:46.786 CEST [248757] STATEMENT:  SELECT * FROM $1
+2024-09-24 16:04:54.820 CEST [248807] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 16:04:54.820 CEST [248807] STATEMENT:  SELECT * FROM $1
+2024-09-24 16:07:26.325 CEST [248873] ERROR:  syntax error at or near "$1" at character 15
+2024-09-24 16:07:26.325 CEST [248873] STATEMENT:  SELECT * FROM $1
+2024-09-24 22:48:22.348 CEST [191595] LOG:  checkpoint starting: time
+2024-09-24 22:48:22.610 CEST [191595] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.209 s, sync=0.012 s, total=0.262 s; sync files=3, longest=0.009 s, average=0.004 s; distance=1 kB, estimate=72 kB; lsn=0/1E11300, redo lsn=0/1E112C8
+2024-09-26 11:24:09.243 CEST [108293] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-26 11:24:09.243 CEST [108293] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-26 11:24:09.254 CEST [108293] FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied
+2024-09-26 11:24:09.256 CEST [108293] LOG:  database system is shut down
+2024-09-26 11:25:33.539 CEST [108627] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-26 11:25:33.539 CEST [108627] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-26 11:25:33.543 CEST [108627] FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied
+2024-09-26 11:25:33.545 CEST [108627] LOG:  database system is shut down
+2024-09-26 11:26:11.501 CEST [108787] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-26 11:26:11.501 CEST [108787] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-26 11:26:11.505 CEST [108787] FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied
+2024-09-26 11:26:11.506 CEST [108787] LOG:  database system is shut down
+2024-09-26 11:29:01.192 CEST [109459] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-09-26 11:29:01.192 CEST [109459] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-09-26 11:29:01.196 CEST [109459] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-09-26 11:29:01.205 CEST [109462] LOG:  database system was interrupted; last known up at 2024-09-24 22:48:22 CEST
+2024-09-26 11:29:01.380 CEST [109462] LOG:  database system was not properly shut down; automatic recovery in progress
+2024-09-26 11:29:01.386 CEST [109462] LOG:  redo starts at 0/1E112C8
+2024-09-26 11:29:01.386 CEST [109462] LOG:  invalid record length at 0/1E113B0: expected at least 24, got 0
+2024-09-26 11:29:01.386 CEST [109462] LOG:  redo done at 0/1E11378 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2024-09-26 11:29:01.390 CEST [109460] LOG:  checkpoint starting: end-of-recovery immediate wait
+2024-09-26 11:29:01.409 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.006 s, sync=0.003 s, total=0.020 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1E113B0, redo lsn=0/1E113B0
+2024-09-26 11:29:01.412 CEST [109459] LOG:  database system is ready to accept connections
