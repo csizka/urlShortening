@@ -1,130 +1,11 @@
+package com.junicamp
+
 import java.sql.{Array => SqlArray, *}
 import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
 import scala.annotation.tailrec
 import java.util.Random
 import scala.collection.mutable.HashMap
-
-case class Database(conn: Connection) {
-
-  val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
-  val insertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, ?) ON CONFLICT (handle) DO NOTHING")
-  val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM url;")
-
-  def getOrInsertUrl(url: String): Either[String, String] = {
-    val startHandle = encodeUrl(url)
-    insertStatement.setString(2, url)
-    val finalHandle = getOrInsertHandle(startHandle, url)
-
-    finalHandle
-  }
-
-  def lookup(handle: String): Option[String] = {
-    selectStatement.setString(1, handle)
-    val resSet = selectStatement.executeQuery()
-    val elemsExist = resSet.next()
-    if (elemsExist) {
-      val res = Some(resSet.getString("url"))
-      resSet.close()
-      res
-    } else{
-      resSet.close() 
-      None
-    } 
-  }
-
-  def printRecords(): Unit = {
-    val resSet = selectAllstmnt.executeQuery()
-    printUrlHandlePairs(resSet)
-    resSet.close()
-  }
-
-  def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test", "test"))): Unit = {
-    insertRows(rows)
-    val resSet = selectAllstmnt.executeQuery()
-    printUrlHandlePairs(resSet)
-    resSet.close()
-  }
-
-  def insertAndPrintRows(handle: String, url: String): Unit = {
-      insertAndPrintRows(Seq((handle, url)))
-    }
-
-  def findHandleFromUrl(url: String): Option[String] = {
-    val startHandle = encodeUrl(url)
-    val res = findHandle(startHandle, url)
-    res
-  }
-
-  def findHandle(handle: String, url: String): Option[String] = {
-    selectStatement.setString(1, handle)
-    val resSet = selectStatement.executeQuery()
-    val handleExistsInDb = resSet.next()
-    if (handleExistsInDb && resSet.getString("url") == url) {
-      resSet.close() 
-      Some(handle)
-    } else if (handleExistsInDb) {
-      resSet.close() 
-      findHandle(encodeUrl(handle), url)
-    } else {
-      resSet.close() 
-      None
-    } 
-  }
-
-  def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
-    insertStatement.setString(1, handle)
-    val insertedCount = insertStatement.executeUpdate()
-    if (insertedCount > 0) {
-      Right(handle)
-    } else {
-      lookup(handle) match {
-        case Some(urlFromDB) if urlFromDB == url => Left(handle)
-        case _ => getOrInsertHandle(encodeUrl(handle), url)
-      }
-    }
-  }
-
-  def insertRows(rows: Seq[(String, String)]): Unit = {
-    val count = rows.foldLeft (0) { case (curCount, (handle, url)) => 
-        insertStatement.setString(1, handle)
-        insertStatement.setString(2, url)
-        insertStatement.executeUpdate() + curCount 
-    }
-    println(s"${count} record(s) inserted to the table.")
-  }
-
-  def closeConn(): Unit = {
-    conn.close()
-  }
-}
-
-// helper fn for getconn
-def connectToDB(): Connection = {
-  val dbName = "mydb"
-  val host = "localhost"
-  val port = "5432"
-  val url = s"jdbc:postgresql://${host}:${port}/${dbName}"
-  val conn = DriverManager.getConnection(url)
-  conn
-}
-
-//helper fns for querying
-def printUrlHandlePairs(resSet: ResultSet): Unit = {
-  println("printing handle - URL pairs:")
-  while (resSet.next()) {
-    val url = resSet.getString("url")
-    val handle = resSet.getString("handle")
-    println(s"hande: ${handle} - URL: ${url}")
-  }
-  println("all requested values printed")
-}
-
-//encoding related fns + vals
-val base62 = Base62.createInstance()
-
-def encodeUrl(url: String): String = 
-  base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
 
 //tests
 
@@ -153,7 +34,7 @@ def shouldAlreadyExist(url: String, database: Database): Unit = {
 }
 
 def clearTable(): Unit = {
-  val conn = connectToDB()
+  val conn = Database.connectToDB()
   val query = "TRUNCATE TABLE url;"
   val statement = conn.prepareStatement(query)
   statement.executeUpdate()
@@ -187,7 +68,7 @@ def findCollisions(n: Int): List[(String, String)] = {
   val testSet = numSetGen(n)
   val start = (Map[String, List[String]](), List[(String, String)]())
   val (finalMap, finalCollisions) = testSet.foldLeft{start} { case ((curMap, curCollisions), curElem) =>
-    val curHash = encodeUrl(curElem)
+    val curHash = Database.encodeUrl(curElem)
     val nextCollisions = curMap.getOrElse(curHash, List()).foldLeft(curCollisions) {
        case (collList, curCollidingElem) => (curElem, curCollidingElem) :: curCollisions
     }
@@ -205,7 +86,7 @@ def findCollision(): (String, String) = {
   @tailrec
   def findCollisionHelper(ix: Long): (String, String) = {
     val data = s"${ix}.com"
-    val hash = encodeUrl(data)
+    val hash = Database.encodeUrl(data)
 
     handles.get(hash) match {
       case None => handles.addOne((hash -> data)); findCollisionHelper(ix + 1)
@@ -226,7 +107,7 @@ def findCollisionsV2(n: Int): List[(String, String)] = {
   @tailrec
   def findCollisionHelper(ix: Long): List[(String, String)] = {
     val data = s"${ix}.com"
-    val hash = encodeUrl(data)
+    val hash = Database.encodeUrl(data)
     val canStop = ix == n
 
     (canStop, handles.get(hash)) match {
@@ -245,14 +126,14 @@ val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2
 ("2143991","1861715"), ("1343617.com","1472600.com"), ("314415.com","2235669.com"))
 
 def shouldInsertCollidingEntry(database: Database): Unit = {
-  val (lhsUrl, rhsUrl) = findCollision()
+  val (lhsUrl, rhsUrl) = ("4701251","2946054")
   shouldInsertNewEntry(lhsUrl, database)
   shouldInsertNewEntry(rhsUrl, database)
 }
 
 def collisionsShouldAlreadyExist(database: Database): Unit = {
-  val (lhsUrl, rhsUrl) = findCollision()
-  val chainHashedValue = encodeUrl(encodeUrl(rhsUrl))
+  val (lhsUrl, rhsUrl) = ("4701251","2946054")
+  val chainHashedValue = Database.encodeUrl(Database.encodeUrl(rhsUrl))
   shouldAlreadyExist(lhsUrl, database)
   shouldAlreadyExist(rhsUrl, database)
   database.lookup(chainHashedValue).contains(rhsUrl)
@@ -260,14 +141,15 @@ def collisionsShouldAlreadyExist(database: Database): Unit = {
 
 @main 
 def runFns(): Unit = {
-  val db = new Database(connectToDB())
-  clearTable()
-  shouldInsertNewEntry("twitter.com",db)
-  shouldAlreadyExist("twitter.com", db)
-  shouldInsertNewEntry("alibaba.com", db)
+  Database.withDatabase { db =>  
+    clearTable()
+    shouldInsertNewEntry("twitter.com",db)
+    shouldAlreadyExist("twitter.com", db)
+    shouldInsertNewEntry("alibaba.com", db)
 
-  shouldInsertCollidingEntry(db)
-  collisionsShouldAlreadyExist(db)
-  db.closeConn()
-  println("finished")
+    shouldInsertCollidingEntry(db)
+    collisionsShouldAlreadyExist(db)
+    db.closeConn()
+    println("finished")
+  }
 }
