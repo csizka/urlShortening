@@ -167,7 +167,7 @@ def shouldInsertNewEntry(url: String): Unit = {
     oldHandle => assert(false, "This should have not existed in the table"),
     newHandle => {
       val urlIsCorrect = lookup(newHandle).contains(url)
-      assert(urlIsCorrect, "Handle should have correct URL")
+      assert(urlIsCorrect, s"Handle should have correct URL: ${url} instead it has: ${lookup(newHandle).get}")
     }
   )
 }
@@ -178,7 +178,7 @@ def shouldAlreadyExist(url: String): Unit = {
   getHandleRes.fold(
     oldHandle => {
       val urlIsCorrect = lookup(oldHandle).contains(url)
-      assert(urlIsCorrect, "Handle should have correct URL")
+      assert(urlIsCorrect, s"Handle should have correct URL: ${url} instead it has: ${lookup(oldHandle).get}")
     },
     newHandle => assert(false, "This should have existed in the table")
   )
@@ -214,7 +214,6 @@ def numSetGen(n: Int): List[String] = {
   /* found collisions at 
   * 3M rand strings: List((2821091,2255261), (2143991,1861715))
   * 5M rand strings: List((4701251,2946054), (4441313,1266660), (3005482,2443514), (2821091,2255261), (2143991,1861715))*/
-val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"))
 
 def findCollisions(n: Int): List[(String, String)] = {
   val testSet = numSetGen(n)
@@ -247,6 +246,7 @@ def findCollision(): (String, String) = {
   }
   findCollisionHelper(0)
 }
+
 /* Found collisions at:
   * 2M strings: ListBuffer((1343617.com,1472600.com))
   * 3M strings: ListBuffer((1343617.com,1472600.com), (314415.com,2235669.com), (1281267.com,2601850.com), (2532640.com,2864459.com))
@@ -275,13 +275,31 @@ def findCollisionsV2(n: Int): scala.collection.mutable.ListBuffer[(String, Strin
   }
   findCollisionHelper(0)
 }
+val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"), ("1343617.com","1472600.com"), ("314415.com","2235669.com"))
+
+def shouldInsertCollidingEntry(): Unit = {
+  val (lhsUrl, rhsUrl) = findCollision()
+  shouldInsertNewEntry(lhsUrl)
+  shouldInsertNewEntry(rhsUrl)
+}
+
+def collisionsShouldAlreadyExist(): Unit = {
+  val (lhsUrl, rhsUrl) = findCollision()
+  val chainHashedValue = encodeUrl(encodeUrl(rhsUrl))
+  shouldAlreadyExist(lhsUrl)
+  shouldAlreadyExist(rhsUrl)
+  lookup(chainHashedValue)contains(rhsUrl)
+}
 
 @main 
 def runFns(): Unit = {
-  println(findCollisionsV2(2000000))
-  // clearTable()
-  // shouldInsertNewEntry("twitter.com")
-  // shouldAlreadyExist("twitter.com")
-  // shouldInsertNewEntry("alibaba.com")
-  // println("finishesd")
+
+  clearTable()
+  shouldInsertNewEntry("twitter.com")
+  shouldAlreadyExist("twitter.com")
+  shouldInsertNewEntry("alibaba.com")
+
+  shouldInsertCollidingEntry()
+  collisionsShouldAlreadyExist()
+  println("finished")
 }
