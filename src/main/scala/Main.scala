@@ -111,7 +111,7 @@ def insertAndPrintRows(handle: String, url: String): Unit = {
 
 def lookup(handle: String): Option[String] = {
   val conn = connectToDB()
-  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = '${handle}';")
+  val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?;")
   val res = lookup(stmnt, handle)
   stmnt.close()
   conn.close()
@@ -160,14 +160,27 @@ def findHandle(selectStatement: PreparedStatement, handle: String, url: String):
 }
 
 def shouldInsertNewEntry(url: String): Unit = {
-  assert(findHandle(url).isEmpty)
-  assert(getOrInsert(url).isRight)
-  assert(findHandle(url).isDefined)
+  val getHandleRes = getOrInsert(url)
+
+  getHandleRes.fold(
+    oldHandle => assert(false, "This should have not existed in the table"),
+    newHandle => {
+      val urlIsCorrect = lookup(newHandle).contains(url)
+      assert(urlIsCorrect, "Handle should have correct URL")
+    }
+  )
 }
 
 def shouldAlreadyExist(url: String): Unit = {
-  assert(findHandle(url).isDefined)
-  assert(getOrInsert(url).isLeft)
+  val getHandleRes = getOrInsert(url)
+
+  getHandleRes.fold(
+    oldHandle => {
+      val urlIsCorrect = lookup(oldHandle).contains(url)
+      assert(urlIsCorrect, "Handle should have correct URL")
+    },
+    newHandle => assert(false, "This should have existed in the table")
+  )
 }
 
 def clearTable(): Unit = {
@@ -178,6 +191,7 @@ def clearTable(): Unit = {
   statement.close()
   conn.close()
 }
+
 def stringGenerator(n: Int, set: Set[String]): Set[String] = {
   val rand = new Random
   val charSet = ('a' to 'z').toVector ++ ('A' to 'Z').toVector ++ ('0' to '9').toVector
@@ -215,13 +229,13 @@ def findCollisions(n: Int): List[(String, String)] = {
   * 5M rand strings: List((4701251,2946054), (4441313,1266660), (3005482,2443514), (2821091,2255261), (2143991,1861715))*/
 val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"))
 
+// def findCollision
+
 @main 
 def runFns(): Unit = {
-  
- 
-  // clearTable()
-  // shouldInsertNewEntry("twitter.com")
-  // shouldAlreadyExist("twitter.com")
-  // shouldInsertNewEntry("alibaba.com")
-  // println("finishesd")
+  clearTable()
+  shouldInsertNewEntry("twitter.com")
+  shouldAlreadyExist("twitter.com")
+  shouldInsertNewEntry("alibaba.com")
+  println("finishesd")
 }
