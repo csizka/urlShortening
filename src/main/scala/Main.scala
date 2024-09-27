@@ -7,25 +7,19 @@ import scala.collection.mutable.HashMap
 
 case class Database(conn: Connection) {
 
-  def getOrInsert(url: String): Either[String, String] = {
-    val startHandle = encodeUrl(url)
-    val insertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, '${url}') ON CONFLICT (handle) DO NOTHING;")
-    val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
-    val finalHandle = getOrInsertHandle(insertStatement, selectStatement, startHandle, url)
+  val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
+  val insertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, ?) ON CONFLICT (handle) DO NOTHING")
+  val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM url;")
 
-    insertStatement.close()
-    selectStatement.close()
+  def getOrInsertUrl(url: String): Either[String, String] = {
+    val startHandle = encodeUrl(url)
+    insertStatement.setString(2, url)
+    val finalHandle = getOrInsertHandle(startHandle, url)
+
     finalHandle
   }
 
   def lookup(handle: String): Option[String] = {
-    val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?;")
-    val res = lookup(stmnt, handle)
-    stmnt.close()
-    res
-  }
-
-  def lookup(selectStatement: PreparedStatement, handle: String): Option[String] = {
     selectStatement.setString(1, handle)
     val resSet = selectStatement.executeQuery()
     val elemsExist = resSet.next()
@@ -40,42 +34,29 @@ case class Database(conn: Connection) {
   }
 
   def printRecords(): Unit = {
-    val stmnt = conn.prepareStatement(s"SELECT * FROM url;")
-    val resSet = stmnt.executeQuery()
-
+    val resSet = selectAllstmnt.executeQuery()
     printUrlHandlePairs(resSet)
-      
     resSet.close()
-    stmnt.close()
   }
 
   def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test", "test"))): Unit = {
-    val insertStmnt = conn.prepareStatement(s"INSERT INTO url VALUES (?, ?) ON CONFLICT (handle) DO NOTHING;")
-      insertRows(insertStmnt, rows)
-      insertStmnt.close()
-      
-      val selectAllStmnt = conn.prepareStatement(s"SELECT * FROM url;")
-      val resSet = selectAllStmnt.executeQuery()
-
-      printUrlHandlePairs(resSet)
-
-      resSet.close()
-      selectAllStmnt.close()
-    }
+    insertRows(rows)
+    val resSet = selectAllstmnt.executeQuery()
+    printUrlHandlePairs(resSet)
+    resSet.close()
+  }
 
   def insertAndPrintRows(handle: String, url: String): Unit = {
       insertAndPrintRows(Seq((handle, url)))
     }
 
-  def findHandle(url: String): Option[String] = {
+  def findHandleFromUrl(url: String): Option[String] = {
     val startHandle = encodeUrl(url)
-    val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?;")
-    val res = findHandle(stmnt, startHandle, url)
-    stmnt.close()
+    val res = findHandle(startHandle, url)
     res
   }
 
-  def findHandle(selectStatement: PreparedStatement, handle: String, url: String): Option[String] = {
+  def findHandle(handle: String, url: String): Option[String] = {
     selectStatement.setString(1, handle)
     val resSet = selectStatement.executeQuery()
     val handleExistsInDb = resSet.next()
@@ -84,34 +65,35 @@ case class Database(conn: Connection) {
       Some(handle)
     } else if (handleExistsInDb) {
       resSet.close() 
-      findHandle(selectStatement, encodeUrl(handle), url)
+      findHandle(encodeUrl(handle), url)
     } else {
       resSet.close() 
       None
     } 
   }
 
-  def getOrInsertHandle(insertStatement: PreparedStatement, selectStatement: PreparedStatement, handle: String, url: String): Either[String, String] = {
+  def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
     insertStatement.setString(1, handle)
     val insertedCount = insertStatement.executeUpdate()
     if (insertedCount > 0) {
       Right(handle)
     } else {
-      lookup(selectStatement, handle) match {
+      lookup(handle) match {
         case Some(urlFromDB) if urlFromDB == url => Left(handle)
-        case _ => getOrInsertHandle(insertStatement, selectStatement, encodeUrl(handle), url)
+        case _ => getOrInsertHandle(encodeUrl(handle), url)
       }
     }
   }
 
-  def insertRows(statement: PreparedStatement, rows: Seq[(String, String)]): Unit = {
+  def insertRows(rows: Seq[(String, String)]): Unit = {
     val count = rows.foldLeft (0) { case (curCount, (handle, url)) => 
-        statement.setString(1, handle)
-        statement.setString(2, url)
-        statement.executeUpdate() + curCount 
+        insertStatement.setString(1, handle)
+        insertStatement.setString(2, url)
+        insertStatement.executeUpdate() + curCount 
     }
     println(s"${count} record(s) inserted to the table.")
   }
+
   def closeConn(): Unit = {
     conn.close()
   }
@@ -147,7 +129,7 @@ def encodeUrl(url: String): String =
 //tests
 
 def shouldInsertNewEntry(url: String, database: Database): Unit = {
-  val getHandleRes = database.getOrInsert(url)
+  val getHandleRes = database.getOrInsertUrl(url)
 
   getHandleRes.fold(
     oldHandle => assert(false, "This should have not existed in the table"),
@@ -159,7 +141,7 @@ def shouldInsertNewEntry(url: String, database: Database): Unit = {
 }
 
 def shouldAlreadyExist(url: String, database: Database): Unit = {
-  val getHandleRes = database.getOrInsert(url)
+  val getHandleRes = database.getOrInsertUrl(url)
 
   getHandleRes.fold(
     oldHandle => {
