@@ -3,6 +3,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
 import scala.annotation.tailrec
 import java.util.Random
+import scala.collection.mutable.HashMap
 
 
 // helper fn for getconn
@@ -210,6 +211,11 @@ def numSetGen(n: Int): List[String] = {
   (1 to n).map(_.toString()).toList
 }
 
+  /* found collisions at 
+  * 3M rand strings: List((2821091,2255261), (2143991,1861715))
+  * 5M rand strings: List((4701251,2946054), (4441313,1266660), (3005482,2443514), (2821091,2255261), (2143991,1861715))*/
+val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"))
+
 def findCollisions(n: Int): List[(String, String)] = {
   val testSet = numSetGen(n)
   val start = (Map[String, List[String]](), List[(String, String)]())
@@ -224,18 +230,58 @@ def findCollisions(n: Int): List[(String, String)] = {
   finalCollisions
 }
 
-  /* found collisions at 
-  * 3M rand strings: List((2821091,2255261), (2143991,1861715))
-  * 5M rand strings: List((4701251,2946054), (4441313,1266660), (3005482,2443514), (2821091,2255261), (2143991,1861715))*/
-val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"))
+/* Found collisions at (1472600.com,1343617.com)*/
 
-// def findCollision
+def findCollision(): (String, String) = {
+  val handles = new HashMap[String, String]
+  
+  @tailrec
+  def findCollisionHelper(ix: Long): (String, String) = {
+    val data = s"${ix}.com"
+    val hash = encodeUrl(data)
+
+    handles.get(hash) match {
+      case None => handles.addOne((hash -> data)); findCollisionHelper(ix + 1)
+      case Some(otherData) => (data, otherData)
+    }
+  }
+  findCollisionHelper(0)
+}
+/* Found collisions at:
+  * 2M strings: ListBuffer((1343617.com,1472600.com))
+  * 3M strings: ListBuffer((1343617.com,1472600.com), (314415.com,2235669.com), (1281267.com,2601850.com), (2532640.com,2864459.com))
+  *  */
+def findCollisionsV2(n: Int): scala.collection.mutable.ListBuffer[(String, String)] = {
+  val handles = new HashMap[String, List[String]]
+  val collisions = new scala.collection.mutable.ListBuffer[(String, String)]
+
+  @tailrec
+  def findCollisionHelper(ix: Long): scala.collection.mutable.ListBuffer[(String, String)] = {
+    if (ix < n) {
+      val data = s"${ix}.com"
+      val hash = encodeUrl(data)
+      val canStop = ix == n
+
+      (canStop, handles.get(hash)) match {
+        case (true, _) => collisions
+        case (_, None) => handles.addOne((hash -> List(data))); findCollisionHelper(ix + 1)
+        case (_, Some(otherData)) => {
+          handles.addOne((hash -> (data +: otherData)))
+          otherData.map( collidingData => collisions.addOne((collidingData, data)))
+          findCollisionHelper(ix + 1)
+        }
+      }
+    } else collisions
+  }
+  findCollisionHelper(0)
+}
 
 @main 
 def runFns(): Unit = {
-  clearTable()
-  shouldInsertNewEntry("twitter.com")
-  shouldAlreadyExist("twitter.com")
-  shouldInsertNewEntry("alibaba.com")
-  println("finishesd")
+  println(findCollisionsV2(2000000))
+  // clearTable()
+  // shouldInsertNewEntry("twitter.com")
+  // shouldAlreadyExist("twitter.com")
+  // shouldInsertNewEntry("alibaba.com")
+  // println("finishesd")
 }
