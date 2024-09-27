@@ -1,6 +1,8 @@
 import java.sql.{Array => SqlArray, *}
 import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
+import scala.annotation.tailrec
+import java.util.Random
 
 
 // helper fn for getconn
@@ -33,7 +35,7 @@ def insertRows(statement: PreparedStatement, rows: Seq[(String, String)]): Unit 
   println(s"${count} record(s) inserted to the table.")
 }
 
-def insertHandle(insertStatement: PreparedStatement, selectStatement: PreparedStatement, handle: String, url: String): Either[String, String] = {
+def getOrInsertHandle(insertStatement: PreparedStatement, selectStatement: PreparedStatement, handle: String, url: String): Either[String, String] = {
   insertStatement.setString(1, handle)
   val insertedCount = insertStatement.executeUpdate()
   if (insertedCount > 0) {
@@ -41,7 +43,7 @@ def insertHandle(insertStatement: PreparedStatement, selectStatement: PreparedSt
   } else {
     lookup(selectStatement, handle) match {
       case Some(urlFromDB) if urlFromDB == url => Left(handle)
-      case _ => insertHandle(insertStatement, selectStatement, encodeUrl(handle), url)
+      case _ => getOrInsertHandle(insertStatement, selectStatement, encodeUrl(handle), url)
     }
   }
 }
@@ -49,7 +51,8 @@ def insertHandle(insertStatement: PreparedStatement, selectStatement: PreparedSt
 def lookup(selectStatement: PreparedStatement, handle: String): Option[String] = {
   selectStatement.setString(1, handle)
   val resSet = selectStatement.executeQuery()
-  if (resSet.next()) {
+  val elemsExist = resSet.next()
+  if (elemsExist) {
     val res = Some(resSet.getString("url"))
     resSet.close()
     res
@@ -115,53 +118,110 @@ def lookup(handle: String): Option[String] = {
   res
 }
 
-def getHandle(url: String): Either[String, String] = {
+def getOrInsert(url: String): Either[String, String] = {
   val startHandle = encodeUrl(url)
   val conn = connectToDB()
-  val inSertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, '${url}') ON CONFLICT (handle) DO NOTHING;")
+  val insertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, '${url}') ON CONFLICT (handle) DO NOTHING;")
   val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
-  val finalHandle = insertHandle(inSertStatement, selectStatement, startHandle, url)
+  val finalHandle = getOrInsertHandle(insertStatement, selectStatement, startHandle, url)
 
-  inSertStatement.close()
+  insertStatement.close()
   selectStatement.close()
   conn.close()
   finalHandle
 }
 
 //tests
-def lookupUrl(url: String): Option[String] = {
+def findHandle(url: String): Option[String] = {
   val conn = connectToDB()
   val startHandle = encodeUrl(url)
   val stmnt = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?;")
-  val res = lookupUrl(stmnt, startHandle, url)
+  val res = findHandle(stmnt, startHandle, url)
   stmnt.close()
   conn.close()
   res
 }
 
-def lookupUrl(selectStatement: PreparedStatement, handle: String, url: String): Option[String] = {
+@tailrec
+def findHandle(selectStatement: PreparedStatement, handle: String, url: String): Option[String] = {
   selectStatement.setString(1, handle)
   val resSet = selectStatement.executeQuery()
   val handleExistsInDb = resSet.next()
   if (handleExistsInDb && resSet.getString("url") == url) {
-    resSet.close()
+    resSet.close() 
     Some(handle)
   } else if (handleExistsInDb) {
     resSet.close() 
-    lookupUrl(selectStatement, encodeUrl(handle), url)
+    findHandle(selectStatement, encodeUrl(handle), url)
   } else {
+    resSet.close() 
     None
   } 
 }
-// def shouldInsertNewEntry(url: String): Unit = {
-//   val handle = encodeUrl(url)
 
-//   val insertRes = getHandle(url) 
-//   val inserted = ???
-//   ????
-// }
+def shouldInsertNewEntry(url: String): Unit = {
+  assert(findHandle(url).isEmpty)
+  assert(getOrInsert(url).isRight)
+  assert(findHandle(url).isDefined)
+}
+
+def shouldAlreadyExist(url: String): Unit = {
+  assert(findHandle(url).isDefined)
+  assert(getOrInsert(url).isLeft)
+}
+
+def clearTable(): Unit = {
+  val conn = connectToDB()
+  val query = "TRUNCATE TABLE url;"
+  val statement = conn.prepareStatement(query)
+  statement.executeUpdate()
+  statement.close()
+  conn.close()
+}
+def stringGenerator(n: Int, set: Set[String]): Set[String] = {
+  val rand = new Random
+  val charSet = ('a' to 'z').toVector ++ ('A' to 'Z').toVector ++ ('0' to '9').toVector
+  val size = charSet.size
+  if (set.size < n) {
+    val nextString = (1 to 15).map{ _ => 
+      charSet(rand.nextInt(size))
+    }.mkString
+    stringGenerator(n, set + nextString)
+  } else {
+    set
+  }
+}
+
+def numSetGen(n: Int): List[String] = {
+  (1 to n).map(_.toString()).toList
+}
+
+def findCollisions(n: Int): List[(String, String)] = {
+  val testSet = numSetGen(n)
+  val start = (Map[String, List[String]](), List[(String, String)]())
+  val (finalMap, finalCollisions) = testSet.foldLeft{start} { case ((curMap, curCollisions), curElem) =>
+    val curHash = encodeUrl(curElem)
+    val nextCollisions = curMap.getOrElse(curHash, List()).foldLeft(curCollisions) {
+       case (collList, curCollidingElem) => (curElem, curCollidingElem) :: curCollisions
+    }
+    val nextMap = curMap + (curHash -> (curElem :: curMap.getOrElse(curHash, List())))
+    (nextMap, nextCollisions)
+  }
+  finalCollisions
+}
+
+  /* found collisions at 
+  * 3M rand strings: List((2821091,2255261), (2143991,1861715))
+  * 5M rand strings: List((4701251,2946054), (4441313,1266660), (3005482,2443514), (2821091,2255261), (2143991,1861715))*/
+val collPairs = List(("4701251","2946054"), ("4441313","1266660"), ("3005482","2443514"), ("2821091","2255261"), ("2143991","1861715"))
 
 @main 
 def runFns(): Unit = {
-  println(lookupUrl("tes1"))
+  
+ 
+  // clearTable()
+  // shouldInsertNewEntry("twitter.com")
+  // shouldAlreadyExist("twitter.com")
+  // shouldInsertNewEntry("alibaba.com")
+  // println("finishesd")
 }
