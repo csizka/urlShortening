@@ -11,6 +11,10 @@ lazy val root = project
     libraryDependencies ++= Seq(
       "org.postgresql" % "postgresql" % "42.7.4",
       "commons-codec" % "commons-codec" % "1.17.1",
-      "io.seruco.encoding" % "base62" % "0.1.3"
-    )
+      "io.seruco.encoding" % "base62" % "0.1.3",
+      "com.lihaoyi" %% "utest" % "0.8.4" % "test",
+      ),
+
+    testFrameworks += new TestFramework("utest.runner.Framework")
+  
   )
