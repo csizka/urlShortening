@@ -3,9 +3,6 @@ package com.junicamp
 import java.sql.{Array => SqlArray, *}
 import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
-import scala.annotation.tailrec
-import java.util.Random
-import scala.collection.mutable.HashMap
 
 
 case class Database(conn: Connection) {
