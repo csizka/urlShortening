@@ -1,8 +1,7 @@
 package com.junicamp
 
 import java.sql.{Array => SqlArray, *}
-import org.apache.commons.codec.digest.DigestUtils
-import io.seruco.encoding.base62.Base62
+import io.lemonlabs.uri._
 
 
 case class Database(conn: Connection, tableName: String) {
@@ -15,7 +14,7 @@ case class Database(conn: Connection, tableName: String) {
   
 
   def getOrInsertUrl(url: String): Either[String, String] = {
-    val startHandle = encodeUrl(url)
+    val startHandle = Utils.encodeUrl(url)
     insertStatement.setString(2, url)
     val finalHandle = getOrInsertHandle(startHandle, url)
 
@@ -54,7 +53,7 @@ case class Database(conn: Connection, tableName: String) {
     }
 
   def findHandleFromUrl(url: String): Option[String] = {
-    val startHandle = encodeUrl(url)
+    val startHandle = Utils.encodeUrl(url)
     val res = findHandle(startHandle, url)
     res
   }
@@ -68,7 +67,7 @@ case class Database(conn: Connection, tableName: String) {
       Some(handle)
     } else if (handleExistsInDb) {
       resSet.close() 
-      findHandle(encodeUrl(handle), url)
+      findHandle(Utils.encodeUrl(handle), url)
     } else {
       resSet.close() 
       None
@@ -84,7 +83,7 @@ case class Database(conn: Connection, tableName: String) {
     } else {
       lookup(handle) match {
         case Some(urlFromDB) if urlFromDB == url => Left(handle)
-        case _ => getOrInsertHandle(encodeUrl(handle), url)
+        case _ => getOrInsertHandle(Utils.encodeUrl(handle), url)
       }
     }
   }
@@ -98,14 +97,22 @@ case class Database(conn: Connection, tableName: String) {
     println(s"${count} record(s) inserted to the table.")
   }
 
+  def printUrlHandlePairs(resSet: ResultSet): Unit = {
+    println("printing handle - URL pairs:")
+    while (resSet.next()) {
+      val url = resSet.getString("url")
+      val handle = resSet.getString("handle")
+      println(s"hande: ${handle} - URL: ${url}")
+    }
+    println("all requested values printed")
+  }
+
   def closeConn(): Unit = {
     conn.close()
   }
 }
 
 object Database {
-
-  private val base62 = Base62.createInstance()
  
   def withDatabase[T](tableName: String) (action: Database => T): T = {
     val db = new Database(connectToDB(), tableName)
@@ -129,20 +136,4 @@ object Database {
     conn
   }
 
-  def printUrlHandlePairs(resSet: ResultSet): Unit = {
-    println("printing handle - URL pairs:")
-    while (resSet.next()) {
-      val url = resSet.getString("url")
-      val handle = resSet.getString("handle")
-      println(s"hande: ${handle} - URL: ${url}")
-    }
-    println("all requested values printed")
-  }
-
-  def encodeUrl(url: String): String = 
-    base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
-
-  def addScheme(url: String): String = {
-    (url)
-  }
 }

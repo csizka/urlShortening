@@ -1,7 +1,6 @@
 package com.junicamp
 
 import com.junicamp.Database
-import com.junicamp.Database.encodeUrl
 import scalatags.Text.all._
 
 object Main extends cask.MainRoutes {
@@ -29,7 +28,7 @@ object Main extends cask.MainRoutes {
 
   @cask.get("/shorten")
   def shorten(url_input: String) = {
-    val url = Database.addScheme(url_input)
+    val url = Utils.refactorUrl(url_input)
     val handle = db.getOrInsertUrl(url).fold(identity, identity)
     html(
       body (
