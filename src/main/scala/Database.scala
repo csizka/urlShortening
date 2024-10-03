@@ -5,13 +5,13 @@ import org.apache.commons.codec.digest.DigestUtils
 import io.seruco.encoding.base62.Base62
 
 
-case class Database(conn: Connection) {
+case class Database(conn: Connection, tableName: String) {
 
   import Database.*
 
-  private val selectStatement = conn.prepareStatement(s"SELECT url FROM url WHERE handle = ?")
-  private val insertStatement = conn.prepareStatement(s"INSERT INTO url VALUES (?, ?) ON CONFLICT (handle) DO NOTHING")
-  private val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM url;")
+  private val selectStatement = conn.prepareStatement(s"SELECT url FROM ${tableName} WHERE handle = ?")
+  private val insertStatement = conn.prepareStatement(s"INSERT INTO ${tableName} VALUES (?, ?) ON CONFLICT (handle) DO NOTHING")
+  private val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM ${tableName};")
   
 
   def getOrInsertUrl(url: String): Either[String, String] = {
@@ -77,6 +77,7 @@ case class Database(conn: Connection) {
 
   def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
     insertStatement.setString(1, handle)
+    insertStatement.setString(2, url)
     val insertedCount = insertStatement.executeUpdate()
     if (insertedCount > 0) {
       Right(handle)
@@ -106,8 +107,8 @@ object Database {
 
   private val base62 = Base62.createInstance()
  
-  def withDatabase[T](action: Database => T): T = {
-    val db = new Database(connectToDB())
+  def withDatabase[T](tableName: String) (action: Database => T): T = {
+    val db = new Database(connectToDB(), tableName)
 
     try {
       val res = action(db)
@@ -140,4 +141,8 @@ object Database {
 
   def encodeUrl(url: String): String = 
     base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
+
+  def addScheme(url: String): String = {
+    (url)
+  }
 }

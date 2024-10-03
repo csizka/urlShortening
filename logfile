@@ -251,3 +251,142 @@
 2024-10-01 15:33:36.641 CEST [109460] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.711 s, sync=0.030 s, total=0.782 s; sync files=21, longest=0.006 s, average=0.002 s; distance=25 kB, estimate=41 kB; lsn=0/1EB8C50, redo lsn=0/1EB8C18
 2024-10-01 15:38:35.741 CEST [109460] LOG:  checkpoint starting: time
 2024-10-01 15:38:37.705 CEST [109460] LOG:  checkpoint complete: wrote 20 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.912 s, sync=0.029 s, total=1.965 s; sync files=41, longest=0.009 s, average=0.001 s; distance=88 kB, estimate=88 kB; lsn=0/1ECEF70, redo lsn=0/1ECEF38
+2024-10-01 15:56:57.526 CEST [317403] FATAL:  lock file "postmaster.pid" already exists
+2024-10-01 15:56:57.526 CEST [317403] HINT:  Is another postmaster (PID 109459) running in data directory "/usr/local/pgsql/data"?
+2024-10-01 16:00:46.109 CEST [317405] ERROR:  syntax error at or near "psgl" at character 1
+2024-10-01 16:00:46.109 CEST [317405] STATEMENT:  psgl --help
+	CREATE TABLE testTable ()
+	;
+2024-10-01 16:03:36.042 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 16:03:39.816 CEST [109460] LOG:  checkpoint complete: wrote 38 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.720 s, sync=0.027 s, total=3.775 s; sync files=32, longest=0.008 s, average=0.001 s; distance=158 kB, estimate=158 kB; lsn=0/1EF6880, redo lsn=0/1EF6848
+2024-10-01 16:08:36.917 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 16:08:38.002 CEST [109460] LOG:  checkpoint complete: wrote 11 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.015 s, sync=0.036 s, total=1.086 s; sync files=25, longest=0.007 s, average=0.002 s; distance=29 kB, estimate=145 kB; lsn=0/1EFDD18, redo lsn=0/1EFDCE0
+2024-10-01 17:58:45.243 CEST [320360] ERROR:  relation "url_test_insertion3" already exists
+2024-10-01 17:58:45.243 CEST [320360] STATEMENT:  CREATE TABLE url_test_insertion3 ( handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 17:58:45.260 CEST [320361] ERROR:  relation "url_test_insertion3" already exists
+2024-10-01 17:58:45.260 CEST [320361] STATEMENT:  CREATE TABLE url_test_insertion3 ( handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 17:58:45.272 CEST [320362] ERROR:  relation "url_test_insertion3" already exists
+2024-10-01 17:58:45.272 CEST [320362] STATEMENT:  CREATE TABLE url_test_insertion3 ( handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:03:30.825 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:03:33.764 CEST [109460] LOG:  checkpoint complete: wrote 30 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.913 s, sync=0.011 s, total=2.940 s; sync files=29, longest=0.005 s, average=0.001 s; distance=142 kB, estimate=145 kB; lsn=0/1F21868, redo lsn=0/1F21830
+2024-10-01 18:25:27.688 CEST [317405] ERROR:  syntax error at or near "drop" at character 32
+2024-10-01 18:25:27.688 CEST [317405] STATEMENT:  drop table url_test_insertion3
+	drop table url_test_insertion3;
+2024-10-01 18:28:31.139 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:28:34.244 CEST [109460] LOG:  checkpoint complete: wrote 31 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.023 s, sync=0.043 s, total=3.105 s; sync files=28, longest=0.013 s, average=0.002 s; distance=167 kB, estimate=167 kB; lsn=0/1F4B4E8, redo lsn=0/1F4B4B0
+2024-10-01 18:38:49.984 CEST [322136] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:38:49.984 CEST [322136] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:38:50.139 CEST [322139] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:38:50.139 CEST [322139] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:39:24.344 CEST [322188] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:39:24.344 CEST [322188] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:39:24.485 CEST [322191] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:39:24.485 CEST [322191] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:42:06.195 CEST [322284] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:42:06.195 CEST [322284] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:42:06.333 CEST [322287] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:42:06.333 CEST [322287] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:43:31.532 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:43:35.118 CEST [109460] LOG:  checkpoint complete: wrote 36 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.527 s, sync=0.027 s, total=3.587 s; sync files=34, longest=0.007 s, average=0.001 s; distance=188 kB, estimate=188 kB; lsn=0/1F7A508, redo lsn=0/1F7A4D0
+2024-10-01 18:45:01.701 CEST [317405] ERROR:  table "test" does not exist
+2024-10-01 18:45:01.701 CEST [317405] STATEMENT:  DROP TABLE test;
+2024-10-01 18:48:31.130 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:48:32.983 CEST [109460] LOG:  checkpoint complete: wrote 19 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.815 s, sync=0.009 s, total=1.853 s; sync files=9, longest=0.005 s, average=0.001 s; distance=121 kB, estimate=181 kB; lsn=0/1F98A08, redo lsn=0/1F989D0
+2024-10-01 18:50:16.268 CEST [322447] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:50:16.268 CEST [322447] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:50:16.396 CEST [322450] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:50:16.396 CEST [322450] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:53:32.000 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:53:35.672 CEST [109460] LOG:  checkpoint complete: wrote 37 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.617 s, sync=0.030 s, total=3.673 s; sync files=34, longest=0.007 s, average=0.001 s; distance=188 kB, estimate=188 kB; lsn=0/1FC7D68, redo lsn=0/1FC7D30
+2024-10-01 18:54:22.366 CEST [322601] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:54:22.366 CEST [322601] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:54:22.486 CEST [322604] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:54:22.486 CEST [322604] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:57:42.264 CEST [322711] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:57:42.264 CEST [322711] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:57:42.406 CEST [322714] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 18:57:42.406 CEST [322714] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 18:58:31.679 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 18:58:37.753 CEST [109460] LOG:  checkpoint complete: wrote 60 buffers (0.4%); 0 WAL file(s) added, 0 removed, 1 recycled; write=5.928 s, sync=0.112 s, total=6.075 s; sync files=38, longest=0.081 s, average=0.003 s; distance=314 kB, estimate=314 kB; lsn=0/20165F0, redo lsn=0/20165B8
+2024-10-01 19:07:20.386 CEST [324000] ERROR:  value too long for type character varying(7)
+2024-10-01 19:07:20.386 CEST [324000] STATEMENT:  INSERT INTO url VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:08:13.766 CEST [324088] ERROR:  value too long for type character varying(7)
+2024-10-01 19:08:13.766 CEST [324088] STATEMENT:  INSERT INTO url VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:08:44.423 CEST [317405] ERROR:  syntax error at or near "ROM" at character 10
+2024-10-01 19:08:44.423 CEST [317405] STATEMENT:  SELECt * ROM table
+	;
+2024-10-01 19:10:57.001 CEST [324321] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:10:57.001 CEST [324321] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1155869325 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:13:31.875 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 19:13:36.067 CEST [109460] LOG:  checkpoint complete: wrote 42 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.123 s, sync=0.044 s, total=4.192 s; sync files=40, longest=0.007 s, average=0.002 s; distance=179 kB, estimate=300 kB; lsn=0/2043430, redo lsn=0/20433F8
+2024-10-01 19:33:31.246 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 19:33:31.479 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.206 s, sync=0.007 s, total=0.234 s; sync files=3, longest=0.005 s, average=0.003 s; distance=0 kB, estimate=270 kB; lsn=0/20436D8, redo lsn=0/20436A0
+2024-10-01 19:37:59.602 CEST [325645] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:37:59.602 CEST [325645] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1155869325 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:44:15.244 CEST [326011] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:44:15.244 CEST [326011] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1155869325 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:44:15.257 CEST [326011] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:44:15.257 CEST [326011] STATEMENT:  INSERT INTO url_test_-1155869325 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:45:51.541 CEST [326111] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:45:51.541 CEST [326111] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1155869325 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:45:51.557 CEST [326111] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:45:51.557 CEST [326111] STATEMENT:  INSERT INTO url_test_-1155869325 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:46:32.983 CEST [326179] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:46:32.983 CEST [326179] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1155869325 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:46:32.997 CEST [326179] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:46:32.997 CEST [326179] STATEMENT:  INSERT INTO url_test_-1155869325 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:46:58.140 CEST [326253] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:46:58.140 CEST [326253] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:46:58.167 CEST [326253] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:46:58.167 CEST [326253] STATEMENT:  INSERT INTO url_test_-1170105035 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:46:58.349 CEST [326257] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:46:58.349 CEST [326257] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:46:58.355 CEST [326257] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:46:58.355 CEST [326257] STATEMENT:  INSERT INTO url_test_-1360544799 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:47:13.982 CEST [326336] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:47:13.982 CEST [326336] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:47:13.996 CEST [326336] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:47:13.996 CEST [326336] STATEMENT:  INSERT INTO url_test_-1170105035 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:47:14.134 CEST [326339] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:47:14.134 CEST [326339] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:47:14.137 CEST [326339] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:47:14.137 CEST [326339] STATEMENT:  INSERT INTO url_test_-1360544799 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:47:38.188 CEST [326400] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:47:38.188 CEST [326400] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1170105035 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:47:38.201 CEST [326400] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:47:38.201 CEST [326400] STATEMENT:  INSERT INTO url_test_-1170105035 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:47:38.337 CEST [326403] ERROR:  syntax error at or near "-" at character 37
+2024-10-01 19:47:38.337 CEST [326403] STATEMENT:  CREATE TABLE IF NOT EXISTS url_test_-1360544799 (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))
+2024-10-01 19:47:38.340 CEST [326403] ERROR:  syntax error at or near "-" at character 22
+2024-10-01 19:47:38.340 CEST [326403] STATEMENT:  INSERT INTO url_test_-1360544799 VALUES ($1, $2) ON CONFLICT (handle) DO NOTHING
+2024-10-01 19:48:31.667 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 19:48:40.058 CEST [109460] LOG:  checkpoint complete: wrote 84 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=8.341 s, sync=0.033 s, total=8.391 s; sync files=86, longest=0.005 s, average=0.001 s; distance=634 kB, estimate=634 kB; lsn=0/20E2178, redo lsn=0/20E2140
+2024-10-01 19:53:31.060 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 19:53:38.845 CEST [109460] LOG:  checkpoint complete: wrote 78 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=7.737 s, sync=0.019 s, total=7.786 s; sync files=65, longest=0.004 s, average=0.001 s; distance=517 kB, estimate=622 kB; lsn=0/2163898, redo lsn=0/2163860
+2024-10-01 19:58:31.881 CEST [109460] LOG:  checkpoint starting: time
+2024-10-01 19:58:38.462 CEST [109460] LOG:  checkpoint complete: wrote 66 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=6.534 s, sync=0.022 s, total=6.582 s; sync files=61, longest=0.004 s, average=0.001 s; distance=447 kB, estimate=605 kB; lsn=0/21D3860, redo lsn=0/21D3828
+2024-10-02 15:25:34.864 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 15:25:35.113 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.208 s, sync=0.012 s, total=0.250 s; sync files=3, longest=0.008 s, average=0.004 s; distance=1 kB, estimate=545 kB; lsn=0/21D3D48, redo lsn=0/21D3D10
+2024-10-02 15:30:34.148 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 15:30:34.378 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.203 s, sync=0.012 s, total=0.230 s; sync files=3, longest=0.008 s, average=0.004 s; distance=1 kB, estimate=490 kB; lsn=0/21D4220, redo lsn=0/21D41E8
+2024-10-02 15:33:22.362 CEST [350124] FATAL:  database "anabra" does not exist
+2024-10-02 15:45:34.575 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 15:45:34.796 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.203 s, sync=0.004 s, total=0.221 s; sync files=3, longest=0.003 s, average=0.002 s; distance=1 kB, estimate=441 kB; lsn=0/21D4648, redo lsn=0/21D4610
+2024-10-02 15:55:34.974 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 15:55:35.212 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.207 s, sync=0.005 s, total=0.238 s; sync files=3, longest=0.004 s, average=0.002 s; distance=1 kB, estimate=397 kB; lsn=0/21D4AB8, redo lsn=0/21D4A80
+2024-10-02 16:30:34.644 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 16:30:34.878 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.208 s, sync=0.005 s, total=0.234 s; sync files=3, longest=0.004 s, average=0.002 s; distance=1 kB, estimate=357 kB; lsn=0/21D4F68, redo lsn=0/21D4F30
+2024-10-02 16:55:35.235 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 16:55:35.485 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.209 s, sync=0.012 s, total=0.251 s; sync files=3, longest=0.008 s, average=0.004 s; distance=1 kB, estimate=322 kB; lsn=0/21D5470, redo lsn=0/21D5438
+2024-10-02 17:00:35.585 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 17:00:35.834 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.210 s, sync=0.007 s, total=0.250 s; sync files=3, longest=0.005 s, average=0.003 s; distance=1 kB, estimate=290 kB; lsn=0/21D59B0, redo lsn=0/21D5978
+2024-10-02 17:05:35.935 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 17:05:36.170 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.206 s, sync=0.008 s, total=0.236 s; sync files=3, longest=0.006 s, average=0.003 s; distance=1 kB, estimate=261 kB; lsn=0/21D5F50, redo lsn=0/21D5F18
+2024-10-02 22:36:20.289 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 22:36:20.544 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.207 s, sync=0.014 s, total=0.256 s; sync files=3, longest=0.010 s, average=0.005 s; distance=1 kB, estimate=235 kB; lsn=0/21D6548, redo lsn=0/21D6510
+2024-10-02 23:03:03.235 CEST [109460] LOG:  checkpoint starting: time
+2024-10-02 23:03:03.466 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.204 s, sync=0.009 s, total=0.232 s; sync files=3, longest=0.006 s, average=0.003 s; distance=1 kB, estimate=211 kB; lsn=0/21D6B70, redo lsn=0/21D6B38
+2024-10-03 10:26:34.701 CEST [109460] LOG:  checkpoint starting: time
+2024-10-03 10:26:34.932 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.205 s, sync=0.009 s, total=0.232 s; sync files=3, longest=0.007 s, average=0.003 s; distance=1 kB, estimate=190 kB; lsn=0/21D71E0, redo lsn=0/21D71A8
+2024-10-03 11:11:35.384 CEST [109460] LOG:  checkpoint starting: time
+2024-10-03 11:11:35.615 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.204 s, sync=0.005 s, total=0.231 s; sync files=3, longest=0.003 s, average=0.002 s; distance=1 kB, estimate=172 kB; lsn=0/21D78A8, redo lsn=0/21D7870
