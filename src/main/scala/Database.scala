@@ -106,7 +106,7 @@ case class Database(conn: Connection, tableName: String) {
     }
     println("all requested values printed")
   }
-
+  
   def closeConn(): Unit = {
     conn.close()
   }

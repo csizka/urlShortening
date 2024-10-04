@@ -394,3 +394,22 @@
 2024-10-03 15:06:19.506 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.205 s, sync=0.011 s, total=0.249 s; sync files=3, longest=0.008 s, average=0.004 s; distance=2 kB, estimate=155 kB; lsn=0/21D80F8, redo lsn=0/21D80C0
 2024-10-03 16:01:20.319 CEST [109460] LOG:  checkpoint starting: time
 2024-10-03 16:01:20.544 CEST [109460] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.204 s, sync=0.008 s, total=0.225 s; sync files=3, longest=0.006 s, average=0.003 s; distance=2 kB, estimate=139 kB; lsn=0/21D89C8, redo lsn=0/21D8990
+2024-10-04 01:20:25.281 CEST [52124] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-10-04 01:20:25.282 CEST [52124] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-10-04 01:20:25.288 CEST [52124] FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied
+2024-10-04 01:20:25.289 CEST [52124] LOG:  database system is shut down
+2024-10-04 01:25:17.711 CEST [53359] LOG:  starting PostgreSQL 16.4 (Ubuntu 16.4-1.pgdg22.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, 64-bit
+2024-10-04 01:25:17.711 CEST [53359] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-10-04 01:25:17.715 CEST [53359] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-10-04 01:25:17.727 CEST [53362] LOG:  database system was interrupted; last known up at 2024-10-03 16:01:20 CEST
+2024-10-04 01:25:17.919 CEST [53362] LOG:  database system was not properly shut down; automatic recovery in progress
+2024-10-04 01:25:17.924 CEST [53362] LOG:  redo starts at 0/21D8990
+2024-10-04 01:25:17.924 CEST [53362] LOG:  invalid record length at 0/21D8A78: expected at least 24, got 0
+2024-10-04 01:25:17.924 CEST [53362] LOG:  redo done at 0/21D8A40 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2024-10-04 01:25:17.931 CEST [53360] LOG:  checkpoint starting: end-of-recovery immediate wait
+2024-10-04 01:25:17.950 CEST [53360] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.003 s, total=0.022 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/21D8A78, redo lsn=0/21D8A78
+2024-10-04 01:25:17.954 CEST [53359] LOG:  database system is ready to accept connections
+2024-10-04 01:30:18.012 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 01:30:18.342 CEST [53360] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.304 s, sync=0.008 s, total=0.331 s; sync files=4, longest=0.005 s, average=0.002 s; distance=8 kB, estimate=8 kB; lsn=0/21DAB60, redo lsn=0/21DAB28
+2024-10-04 11:15:13.425 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 11:15:13.673 CEST [53360] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.210 s, sync=0.012 s, total=0.249 s; sync files=3, longest=0.008 s, average=0.004 s; distance=2 kB, estimate=7 kB; lsn=0/21DB450, redo lsn=0/21DB418

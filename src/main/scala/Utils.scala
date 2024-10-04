@@ -15,14 +15,14 @@ object Utils {
   def encodeUrl(url: String): String = 
     base62.encode(DigestUtils.md5(url)).map(_.toChar).mkString.takeRight(7)
 
-  def refactorUrl(url_input: String): String = {
-    val parsedUrl = Url.parse(url_input)
-    val finalUrl = parsedUrl match {
-      case url: RelativeUrl => "http://" + url_input
-      case url: ProtocolRelativeUrl => "http:" + url_input
-      case _ => url_input
-    }
-    finalUrl    
+  def parseUrl(url_input: String): Option[Url] = {
+    val parsedUrl = Seq(
+      AbsoluteUrl.parseOption(url_input),
+      UrlWithoutAuthority.parseOption(url_input),
+      AbsoluteUrl.parseOption("http:" + url_input),
+      AbsoluteUrl.parseOption("http://" + url_input),
+    ).find(_.isDefined).flatten 
+    parsedUrl
   }
 
   def stringGenerator(n: Int, set: Set[String]): Set[String] = {

@@ -27,23 +27,24 @@ object Main extends cask.MainRoutes {
   }
 
   @cask.get("/shorten")
-  def shorten(url_input: String) = {
-    val url = Utils.refactorUrl(url_input)
-    val handle = db.getOrInsertUrl(url).fold(identity, identity)
-    html(
-      body (
-        h1("URL Shortening"),
-        br,
-        div(
-          h2(s"for URL: ${url} the tiny URL is:"),
-          h2(s"'localhost:8080/${handle}'"),
-          form(action := "/", method := "get")(
-            br,
-            input( `type` := "submit", value := "New search"),
-          ),
-        )
+  def shorten(url_input: String): cask.Response[ujson.Obj] = {
+  Utils.parseUrl(url_input).fold(
+    cask.Response( data = ujson.Obj(
+      "error" -> "invalid url",
+      ),
+      statusCode = 400,
       )
-    )
+    ){ parsedUrl =>
+      val absUrlStr = parsedUrl.toString
+      val handle = db.getOrInsertUrl(absUrlStr).fold(identity, identity)
+      cask.Response(
+        data = ujson.Obj(
+          "url" -> absUrlStr,
+          "handle" -> handle,
+        ),
+        statusCode = 200,
+      )
+    }
   }
 
   @cask.get("/:handle")
