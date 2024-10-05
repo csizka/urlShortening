@@ -2,6 +2,7 @@ package com.junicamp
 
 import java.sql.{Array => SqlArray, *}
 import io.lemonlabs.uri._
+import java.util.Calendar
 
 
 case class Database(conn: Connection, tableName: String) {
@@ -9,9 +10,13 @@ case class Database(conn: Connection, tableName: String) {
   import Database.*
 
   private val selectStatement = conn.prepareStatement(s"SELECT url FROM ${tableName} WHERE handle = ?")
-  private val insertStatement = conn.prepareStatement(s"INSERT INTO ${tableName} VALUES (?, ?) ON CONFLICT (handle) DO NOTHING")
+  private val insertStatement = conn.prepareStatement(s"INSERT INTO ${tableName} VALUES (?, ?, ?) ON CONFLICT (handle) DO NOTHING")
   private val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM ${tableName};")
   
+  // val timestamp = java.time.Instant.now()
+  // val javaTimeStamp : java.sql.Timestamp 
+
+  // insertStatement.set
 
   def getOrInsertUrl(url: String): Either[String, String] = {
     val startHandle = Utils.encodeUrl(url)
@@ -75,8 +80,10 @@ case class Database(conn: Connection, tableName: String) {
   }
 
   def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
+    val now = java.sql.Timestamp.from(java.time.Instant.now()) 
     insertStatement.setString(1, handle)
     insertStatement.setString(2, url)
+    insertStatement.setTimestamp(3, now)
     val insertedCount = insertStatement.executeUpdate()
     if (insertedCount > 0) {
       Right(handle)

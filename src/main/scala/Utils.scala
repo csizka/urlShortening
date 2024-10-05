@@ -5,6 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import io.lemonlabs.uri._
 import scala.util.Random
 import scala.collection.mutable.HashMap
+import java.sql.{Array => SqlArray, *}
 
 
 object Utils {

@@ -22,7 +22,11 @@ object UrlShorteningTests extends TestSuite{
     val tableId = math.abs(random.nextInt())
     val tableName = s"url_test_${tableId}"
     Database.withDatabase (tableName) { db => 
-      val createQuery = s"CREATE TABLE IF NOT EXISTS ${tableName} (handle VARCHAR(7) PRIMARY KEY, url VARCHAR(2000))" 
+      val createQuery = s"CREATE TABLE IF NOT EXISTS ${tableName} (" +
+        s"handle VARCHAR(7) PRIMARY KEY, " +
+        s"url VARCHAR(2000), " +
+        s"timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()" +
+        s")" 
       val createStatement = db.conn.prepareStatement(createQuery)
       try {createStatement.executeUpdate()} catch { case e: Throwable => println(e)}
       createStatement.close()

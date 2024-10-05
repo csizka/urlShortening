@@ -413,3 +413,24 @@
 2024-10-04 01:30:18.342 CEST [53360] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.304 s, sync=0.008 s, total=0.331 s; sync files=4, longest=0.005 s, average=0.002 s; distance=8 kB, estimate=8 kB; lsn=0/21DAB60, redo lsn=0/21DAB28
 2024-10-04 11:15:13.425 CEST [53360] LOG:  checkpoint starting: time
 2024-10-04 11:15:13.673 CEST [53360] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.210 s, sync=0.012 s, total=0.249 s; sync files=3, longest=0.008 s, average=0.004 s; distance=2 kB, estimate=7 kB; lsn=0/21DB450, redo lsn=0/21DB418
+2024-10-04 13:20:15.239 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 13:20:16.207 CEST [53360] LOG:  checkpoint complete: wrote 10 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.919 s, sync=0.015 s, total=0.970 s; sync files=9, longest=0.008 s, average=0.002 s; distance=51 kB, estimate=51 kB; lsn=0/21E82B0, redo lsn=0/21E8278
+2024-10-04 13:45:31.640 CEST [167520] FATAL:  database "mybd" does not exist
+2024-10-04 13:49:58.756 CEST [168620] FATAL:  database "mybd" does not exist
+2024-10-04 13:50:15.569 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 13:50:15.914 CEST [53360] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.303 s, sync=0.010 s, total=0.345 s; sync files=2, longest=0.009 s, average=0.005 s; distance=15 kB, estimate=48 kB; lsn=0/21EC178, redo lsn=0/21EC140
+2024-10-04 14:37:46.707 CEST [174783] ERROR:  type "varcher" does not exist at character 43
+2024-10-04 14:37:46.707 CEST [174783] STATEMENT:  CREATE TABLE IF NOT EXISTS url (
+	  handle VARCHER(7) PRIMARY KEY,
+	  url VARCHAR(2000) NOT NULL
+	);
+2024-10-04 14:39:26.328 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 14:39:29.287 CEST [53360] LOG:  checkpoint complete: wrote 30 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.924 s, sync=0.017 s, total=2.959 s; sync files=31, longest=0.006 s, average=0.001 s; distance=148 kB, estimate=148 kB; lsn=0/2211478, redo lsn=0/2211440
+2024-10-04 14:49:26.380 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 14:49:29.851 CEST [53360] LOG:  checkpoint complete: wrote 35 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.423 s, sync=0.017 s, total=3.471 s; sync files=46, longest=0.005 s, average=0.001 s; distance=191 kB, estimate=191 kB; lsn=0/2241308, redo lsn=0/22412D0
+2024-10-04 16:49:28.527 CEST [53360] LOG:  checkpoint starting: time
+2024-10-04 16:49:31.925 CEST [53360] LOG:  checkpoint complete: wrote 34 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.335 s, sync=0.041 s, total=3.398 s; sync files=47, longest=0.007 s, average=0.001 s; distance=185 kB, estimate=191 kB; lsn=0/226F830, redo lsn=0/226F7F8
+2024-10-05 12:18:05.553 CEST [53360] LOG:  checkpoint starting: time
+2024-10-05 12:18:05.894 CEST [53360] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.318 s, sync=0.005 s, total=0.342 s; sync files=3, longest=0.004 s, average=0.002 s; distance=0 kB, estimate=171 kB; lsn=0/226FAA8, redo lsn=0/226FA70
+2024-10-05 12:43:06.176 CEST [53360] LOG:  checkpoint starting: time
+2024-10-05 12:43:07.873 CEST [53360] LOG:  checkpoint complete: wrote 17 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.618 s, sync=0.031 s, total=1.697 s; sync files=24, longest=0.011 s, average=0.002 s; distance=51 kB, estimate=159 kB; lsn=0/227CA40, redo lsn=0/227CA08
