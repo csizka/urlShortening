@@ -434,3 +434,14 @@
 2024-10-05 12:18:05.894 CEST [53360] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.318 s, sync=0.005 s, total=0.342 s; sync files=3, longest=0.004 s, average=0.002 s; distance=0 kB, estimate=171 kB; lsn=0/226FAA8, redo lsn=0/226FA70
 2024-10-05 12:43:06.176 CEST [53360] LOG:  checkpoint starting: time
 2024-10-05 12:43:07.873 CEST [53360] LOG:  checkpoint complete: wrote 17 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.618 s, sync=0.031 s, total=1.697 s; sync files=24, longest=0.011 s, average=0.002 s; distance=51 kB, estimate=159 kB; lsn=0/227CA40, redo lsn=0/227CA08
+2024-10-05 12:58:06.966 CEST [53360] LOG:  checkpoint starting: time
+2024-10-05 12:58:13.072 CEST [53360] LOG:  checkpoint complete: wrote 61 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=6.032 s, sync=0.049 s, total=6.107 s; sync files=48, longest=0.007 s, average=0.002 s; distance=368 kB, estimate=368 kB; lsn=0/22D8C48, redo lsn=0/22D8C10
+2024-10-08 10:24:28.353 CEST [53365] WARNING:  autovacuum worker took too long to start; canceled
+2024-10-08 10:24:28.946 CEST [247944] WARNING:  autovacuum worker started without a worker entry
+2024-10-08 11:23:05.535 CEST [249158] FATAL:  role "postgres" does not exist
+2024-10-08 11:41:47.672 CEST [53359] LOG:  received smart shutdown request
+2024-10-08 11:41:47.692 CEST [53359] LOG:  background worker "logical replication launcher" (PID 53366) exited with exit code 1
+2024-10-08 11:41:47.694 CEST [53360] LOG:  shutting down
+2024-10-08 11:41:47.699 CEST [53360] LOG:  checkpoint starting: shutdown immediate
+2024-10-08 11:41:47.745 CEST [53360] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.023 s, sync=0.001 s, total=0.051 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=331 kB; lsn=0/22D8CF8, redo lsn=0/22D8CF8
+2024-10-08 11:41:47.761 CEST [53359] LOG:  database system is shut down

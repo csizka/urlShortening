@@ -8,6 +8,7 @@ lazy val root = project
     run / fork := true,
 
     scalaVersion := scala3Version,
+    assembly / assemblyJarName := "url-shortening.jar",
 
     libraryDependencies ++= Seq(
 
