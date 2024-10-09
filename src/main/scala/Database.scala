@@ -135,10 +135,12 @@ object Database {
   }
 
   def connectToDB(): Connection = {
-    val dbName = "mydb"
-    val host = "localhost"
+    val dbName = "postgres"
+    val host = "postgres"
     val port = "5432"
-    val url = s"jdbc:postgresql://${host}:${port}/${dbName}"
+    val user = "postgres"
+    val pw = "password"
+    val url = s"jdbc:postgresql://${host}:${port}/${dbName}?user=${user}&password=${pw}"
     val conn = DriverManager.getConnection(url)
     conn
   }
