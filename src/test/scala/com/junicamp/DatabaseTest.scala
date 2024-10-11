@@ -19,22 +19,10 @@ object UrlShorteningTests extends TestSuite{
   }
 
   def withTable (action: Database => Unit): Unit = {
-    val tableId = math.abs(random.nextInt())
-    val tableName = s"url_test_${tableId}"
+    val tableName = "url"
     Database.withDatabase (tableName) { db => 
-      val createQuery = s"CREATE TABLE IF NOT EXISTS ${tableName} (" +
-        s"handle VARCHAR(7) PRIMARY KEY, " +
-        s"url VARCHAR(2000), " +
-        s"timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()" +
-        s")" 
-      val createStatement = db.conn.prepareStatement(createQuery)
-      try {createStatement.executeUpdate()} catch { case e: Throwable => println(e)}
-      createStatement.close()
+      clearTable(db.conn, tableName)
       action(db)
-      val dropQuery = s"DROP TABLE IF EXISTS ${tableName}"
-      val dropStatement = db.conn.prepareStatement(dropQuery)
-      dropStatement.executeUpdate()
-      dropStatement.close()
     }
   }
 

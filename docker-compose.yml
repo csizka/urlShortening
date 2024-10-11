@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: "postgres:16.4"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "password"
+    healthcheck:
+      test: pg_isready --dbname postgres --username postgres
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+      image: "migrate/migrate:v4.18.1"
+      volumes:
+        - ./migrations/:/migrations
+      depends_on:
+        postgres:
+          condition: service_healthy
+      command: [
+        "-database", "postgres://postgres:5432/postgres?user=postgres&password=password&sslmode=disable",
+        "-path", "/migrations",
+        "-verbose",
+        "up"
+      ]
+
+  app:
+    image: url-shortening
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  
+  test:
+    image: url-shortening-test
+    build:
+      dockerfile: ./src/test/docker/Dockerfile
+      context: .
+    depends_on:
+      migrate:
+        condition: service_completed_successfully

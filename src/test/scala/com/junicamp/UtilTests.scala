@@ -24,7 +24,7 @@ object UtilTests extends TestSuite {
         parseUrlShouldWorkFor("youtube.com", "http://youtube.com")
       }
 
-      test("refactorUrl should add http: to the url_input of protovol relat iveURLs"){
+      test("refactorUrl should add http: to the url_input of protocol relative URLs"){
         parseUrlShouldWorkFor("//youtube.com", "http://youtube.com")
       }
       
