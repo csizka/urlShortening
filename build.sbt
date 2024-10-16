@@ -11,7 +11,7 @@ lazy val root = project
     assembly / assemblyJarName := "url-shortening.jar",
 
     libraryDependencies ++= Seq(
-
+      "org.apache.cassandra" % "java-driver-core" % "4.18.1",
       "org.postgresql" % "postgresql" % "42.7.4",
       "commons-codec" % "commons-codec" % "1.17.1",
       "io.seruco.encoding" % "base62" % "0.1.3",

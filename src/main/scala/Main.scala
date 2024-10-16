@@ -36,7 +36,7 @@ object Main extends cask.MainRoutes {
       )
     ){ parsedUrl =>
       val absUrlStr = parsedUrl.toString
-      val handle = db.getOrInsertUrl(absUrlStr).fold(identity, identity)
+      val handle = db.getOrInsertHandle(absUrlStr).fold(identity, identity)
       cask.Response(
         data = ujson.Obj(
           "url" -> absUrlStr,
@@ -60,4 +60,9 @@ object Main extends cask.MainRoutes {
   }
   
   initialize()
+}
+
+@main
+def cassTest(): Unit = {
+  println("done")
 }

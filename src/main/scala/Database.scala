@@ -15,16 +15,7 @@ case class Database(conn: Connection, tableName: String) {
   
   // val timestamp = java.time.Instant.now()
   // val javaTimeStamp : java.sql.Timestamp 
-
   // insertStatement.set
-
-  def getOrInsertUrl(url: String): Either[String, String] = {
-    val startHandle = Utils.encodeUrl(url)
-    insertStatement.setString(2, url)
-    val finalHandle = getOrInsertHandle(startHandle, url)
-
-    finalHandle
-  }
 
   def lookup(handle: String): Option[String] = {
     selectStatement.setString(1, handle)
@@ -40,59 +31,54 @@ case class Database(conn: Connection, tableName: String) {
     } 
   }
 
+  def getOrInsertHandle(url: String): Either[String, String] = {
+    val startHandle = Utils.encodeUrl(url)
+    insertStatement.setString(2, url)
+
+    def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
+      val now = java.sql.Timestamp.from(java.time.Instant.now()) 
+      insertStatement.setString(1, handle)
+      insertStatement.setString(2, url)
+      insertStatement.setTimestamp(3, now)
+      val insertedCount = insertStatement.executeUpdate()
+      if (insertedCount > 0) {
+        Right(handle)
+      } else {
+        lookup(handle) match {
+          case Some(urlFromDB) if urlFromDB == url => Left(handle)
+          case _ => getOrInsertHandle(Utils.encodeUrl(handle), url)
+        }
+      }
+    }
+    getOrInsertHandle(startHandle, url)
+  }
+
+  def findHandle(url: String): Option[String] = {
+    val startHandle = Utils.encodeUrl(url)
+
+    def findHandle(handle: String, url: String): Option[String] = {
+      selectStatement.setString(1, handle)
+      val resSet = selectStatement.executeQuery()
+      val handleExistsInDb = resSet.next()
+      if (handleExistsInDb && resSet.getString("url") == url) {
+        resSet.close() 
+        Some(handle)
+      } else if (handleExistsInDb) {
+        resSet.close() 
+        findHandle(Utils.encodeUrl(handle), url)
+      } else {
+        resSet.close() 
+        None
+      } 
+    }
+
+    findHandle(startHandle, url)
+  }
+
   def printRecords(): Unit = {
     val resSet = selectAllstmnt.executeQuery()
     printUrlHandlePairs(resSet)
     resSet.close()
-  }
-
-  def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test", "test"))): Unit = {
-    insertRows(rows)
-    val resSet = selectAllstmnt.executeQuery()
-    printUrlHandlePairs(resSet)
-    resSet.close()
-  }
-
-  def insertAndPrintRows(handle: String, url: String): Unit = {
-      insertAndPrintRows(Seq((handle, url)))
-    }
-
-  def findHandleFromUrl(url: String): Option[String] = {
-    val startHandle = Utils.encodeUrl(url)
-    val res = findHandle(startHandle, url)
-    res
-  }
-
-  def findHandle(handle: String, url: String): Option[String] = {
-    selectStatement.setString(1, handle)
-    val resSet = selectStatement.executeQuery()
-    val handleExistsInDb = resSet.next()
-    if (handleExistsInDb && resSet.getString("url") == url) {
-      resSet.close() 
-      Some(handle)
-    } else if (handleExistsInDb) {
-      resSet.close() 
-      findHandle(Utils.encodeUrl(handle), url)
-    } else {
-      resSet.close() 
-      None
-    } 
-  }
-
-  def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
-    val now = java.sql.Timestamp.from(java.time.Instant.now()) 
-    insertStatement.setString(1, handle)
-    insertStatement.setString(2, url)
-    insertStatement.setTimestamp(3, now)
-    val insertedCount = insertStatement.executeUpdate()
-    if (insertedCount > 0) {
-      Right(handle)
-    } else {
-      lookup(handle) match {
-        case Some(urlFromDB) if urlFromDB == url => Left(handle)
-        case _ => getOrInsertHandle(Utils.encodeUrl(handle), url)
-      }
-    }
   }
 
   def insertRows(rows: Seq[(String, String)]): Unit = {
@@ -113,6 +99,15 @@ case class Database(conn: Connection, tableName: String) {
     }
     println("all requested values printed")
   }
+
+  def insertAndPrintRows(rows: Seq[(String, String)] = Seq(("test", "test"))): Unit = {
+    insertRows(rows)
+    printRecords()
+  }
+
+  def insertAndPrintRows(handle: String, url: String): Unit = {
+      insertAndPrintRows(Seq((handle, url)))
+    }
   
   def closeConn(): Unit = {
     conn.close()
