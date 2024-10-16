@@ -1,11 +1,11 @@
 package com.junicamp
 
-import com.junicamp.Database
+import com.junicamp.DatabasePostgres
 import scalatags.Text.all._
 
 object Main extends cask.MainRoutes {
   override def host = "0.0.0.0"
-  val db = new Database(Database.connectToDB(), "url")
+  val db: Database = DatabasePostgres.makeDatabase()
 
   @cask.get("/")
   def index() = {

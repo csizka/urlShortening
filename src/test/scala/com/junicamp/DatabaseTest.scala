@@ -11,17 +11,20 @@ import scala.util.Random
 object UrlShorteningTests extends TestSuite{
   val random = new Random(42)
   
-  def clearTable(conn: Connection, tableName: String): Unit = {
-    val query = s"TRUNCATE TABLE ${tableName};"
-    val statement = conn.prepareStatement(query)
+  def clearTable(db: DatabasePostgres): Unit = {
+    val query = s"TRUNCATE TABLE ${db.tableName};"
+    val statement = db.conn.prepareStatement(query)
     statement.executeUpdate()
     statement.close()
   }
 
-  def withTable (action: Database => Unit): Unit = {
-    val tableName = "url"
-    Database.withDatabase (tableName) { db => 
-      clearTable(db.conn, tableName)
+    def clearTable(db: DatabaseCassandra): Unit = {
+    db.sess.execute(s"TRUNCATE TABLE ${db.tableName};")
+  }
+
+  def withTable (action: DatabasePostgres => Unit): Unit = {
+    DatabasePostgres.withDatabase { db => 
+      clearTable(db)
       action(db)
     }
   }
