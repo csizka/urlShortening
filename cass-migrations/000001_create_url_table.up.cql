@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS cassandra.url  (handle VARCHAR PRIMARY KEY, url VARCHAR, timestamp TIMESTAMP);

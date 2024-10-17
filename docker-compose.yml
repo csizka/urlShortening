@@ -11,19 +11,58 @@ services:
       timeout: 5s
       retries: 10
 
-  migrate:
-      image: "migrate/migrate:v4.18.1"
-      volumes:
-        - ./migrations/:/migrations
-      depends_on:
-        postgres:
-          condition: service_healthy
-      command: [
-        "-database", "postgres://postgres:5432/postgres?user=postgres&password=password&sslmode=disable",
-        "-path", "/migrations",
-        "-verbose",
-        "up"
+  pg-migrate:
+    image: "migrate/migrate:v4.18.1"
+    volumes:
+      - ./pg-migrations/:/pg-migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: [
+      "-database", "postgres://postgres:5432/postgres?user=postgres&password=password&sslmode=disable",
+      "-path", "/pg-migrations",
+      "-verbose",
+      "up"
+    ]
+
+  cassandra:
+    image: "cassandra:latest"
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_PASSWORD: "password"
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cassandra-keyspace:
+    image: "cassandra:latest"
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: [
+      "cqlsh", 
+      "--execute", "CREATE KEYSPACE IF NOT EXISTS cassandra WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy','datacenter1' : 1 } ;", 
+      "cassandra", 
+      "9042"
       ]
+
+  cass-migrate:
+    image: "migrate/migrate:v4.18.1"
+    volumes:
+      - ./cass-migrations/:/cass-migrations
+    depends_on:
+      cassandra-keyspace:
+        condition: service_completed_successfully
+    command: [
+      "-database", "cassandra://cassandra:9042/cassandra?sslmode=disable",
+      "-path", "/cass-migrations",
+      "-verbose",
+      "up"
+    ]
 
   app:
     image: url-shortening
@@ -33,7 +72,9 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      migrate:
+      pg-migrate:
+        condition: service_completed_successfully
+      cass-migrate:
         condition: service_completed_successfully
   
   test:
@@ -42,5 +83,7 @@ services:
       dockerfile: ./src/test/docker/Dockerfile
       context: .
     depends_on:
-      migrate:
+      pg-migrate:
+        condition: service_completed_successfully
+      cass-migrate:
         condition: service_completed_successfully

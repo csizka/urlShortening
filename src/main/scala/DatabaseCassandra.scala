@@ -29,8 +29,10 @@ case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Databa
     val startHandle = Utils.encodeUrl(url)
 
       def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
+        val timestamp = java.time.Instant.now().getEpochSecond()
+
         lookup(handle).fold{
-          val boundInsert = insertStatement.bind().setString("handle", handle).setString("url", url)
+          val boundInsert = insertStatement.bind().setString("handle", handle).setString("url", url).setQueryTimestamp(timestamp)
           val resSet = sess.execute(boundInsert)
           if (resSet.wasApplied())
             Right(handle)
@@ -71,7 +73,7 @@ object DatabaseCassandra extends MkDatabase {
 
   val defaultConfig = DatabaseConfig(
     keySpaceName = "cassandra",
-    host = "localhost",
+    host = "cassandra",
     port = 9042,
     user = "cassandra",
     password = Secret("password"),

@@ -62,7 +62,3 @@ object Main extends cask.MainRoutes {
   initialize()
 }
 
-@main
-def cassTest(): Unit = {
-  println("done")
-}

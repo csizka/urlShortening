@@ -13,10 +13,6 @@ case class DatabasePostgres(conn: Connection, tableName: String) extends Databas
   private val selectStatement = conn.prepareStatement(s"SELECT url FROM ${tableName} WHERE handle = ?")
   private val insertStatement = conn.prepareStatement(s"INSERT INTO ${tableName} VALUES (?, ?, ?) ON CONFLICT (handle) DO NOTHING")
   private val selectAllstmnt = conn.prepareStatement(s"SELECT * FROM ${tableName};")
-  
-  // val timestamp = java.time.Instant.now()
-  // val javaTimeStamp : java.sql.Timestamp 
-  // insertStatement.set
 
   //returns a URL from the database that is associated with the given handle if there is one.
   override def lookup(handle: String): Option[String] = {
@@ -87,7 +83,7 @@ case class DatabasePostgres(conn: Connection, tableName: String) extends Databas
 object DatabasePostgres extends MkDatabase {
 
   val defaultConfig = DatabaseConfig(
-    host = "localhost",
+    host = "postgres",
     port = 5432,
     dbName = "postgres",
     user = "postgres",
