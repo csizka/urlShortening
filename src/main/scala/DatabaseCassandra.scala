@@ -65,37 +65,26 @@ case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Databa
     findHandle(startHandle, url)
   }
 
-  def closeSess() =
+  override def close(): Unit =
     sess.close()
 }
 
 object DatabaseCassandra extends MkDatabase {
 
-  val defaultConfig = DatabaseConfig(
-    keySpaceName = "cassandra",
+  override val defaultConfig = DatabaseConfig(
+    keyspaceName = Some("cassandra"),
     host = "cassandra",
     port = 9042,
-    user = "cassandra",
-    password = Secret("password"),
-    dbName = ""
+    user = None,
+    password = None,
+    dbName = None
   )
  
-  def withDatabase[T](action: DatabaseCassandra => T): T = {
-    val db = makeDatabase()
-
-    try {
-      val res = action(db)
-      res
-    } catch {
-      case e: Throwable => throw e
-    } finally {
-      db.closeSess()
-    }
-  }
   override def makeDatabase(config: DatabaseConfig = defaultConfig, urlTableName: String = "url"): DatabaseCassandra = {
      DatabaseCassandra(CqlSession.builder()
       .addContactPoint(new InetSocketAddress(config.host, config.port))
-      .withKeyspace(CqlIdentifier.fromCql(config.keySpaceName))
+      .withKeyspace(CqlIdentifier.fromCql(config.keyspaceName.get))
+      .withLocalDatacenter("datacenter1")
       .build(), 
       urlTableName)
   }

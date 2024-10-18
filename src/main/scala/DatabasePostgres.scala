@@ -75,37 +75,24 @@ case class DatabasePostgres(conn: Connection, tableName: String) extends Databas
     findHandle(startHandle, url)
   }
 
-  def closeConn(): Unit = {
+  override def close(): Unit = {
     conn.close()
   }
 }
 
 object DatabasePostgres extends MkDatabase {
 
-  val defaultConfig = DatabaseConfig(
+  override val defaultConfig = DatabaseConfig(
     host = "postgres",
     port = 5432,
-    dbName = "postgres",
-    user = "postgres",
-    password = Secret("password"),
-    keySpaceName = ""
+    dbName = Some("postgres"),
+    user = Some("postgres"),
+    password = Some(Secret("password")),
+    keyspaceName = None
   )
- 
-  def withDatabase[T](action: DatabasePostgres => T): T = {
-    val db = makeDatabase()
-
-    try {
-      val res = action(db)
-      res
-    } catch {
-      case e: Throwable => throw e
-    } finally {
-      db.closeConn()
-    }
-  }
 
   override def makeDatabase(config: DatabaseConfig = defaultConfig, urlTableName: String = "url"): DatabasePostgres = {
-    val url = s"jdbc:postgresql://${config.host}:${config.port}/${config.dbName}?user=${config.user}&password=${config.password.pw}"
+    val url = s"jdbc:postgresql://${config.host}:${config.port}/${config.dbName.get}?user=${config.user.get}&password=${config.password.get.pw}"
     val conn = DriverManager.getConnection(url)
     DatabasePostgres(conn, urlTableName)
   }

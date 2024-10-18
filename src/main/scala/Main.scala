@@ -5,7 +5,7 @@ import scalatags.Text.all._
 
 object Main extends cask.MainRoutes {
   override def host = "0.0.0.0"
-  val db: Database = DatabasePostgres.makeDatabase()
+  val db: Database = DatabaseCassandra.makeDatabase()
 
   @cask.get("/")
   def index() = {

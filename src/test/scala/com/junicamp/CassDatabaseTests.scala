@@ -8,22 +8,15 @@ import io.seruco.encoding.base62.Base62
 import scala.util.Random
 
 
-object UrlShorteningTests extends TestSuite{
+object CassUrlShorteningTests extends TestSuite{
   val random = new Random(42)
-  
-  def clearTable(db: DatabasePostgres): Unit = {
-    val query = s"TRUNCATE TABLE ${db.tableName};"
-    val statement = db.conn.prepareStatement(query)
-    statement.executeUpdate()
-    statement.close()
-  }
 
     def clearTable(db: DatabaseCassandra): Unit = {
     db.sess.execute(s"TRUNCATE TABLE ${db.tableName};")
   }
 
-  def withTable (action: DatabasePostgres => Unit): Unit = {
-    DatabasePostgres.withDatabase { db => 
+  def withTable (action: DatabaseCassandra => Unit): Unit = {
+    DatabaseCassandra.withDatabase { db => 
       clearTable(db)
       action(db)
     }
@@ -90,3 +83,5 @@ object UrlShorteningTests extends TestSuite{
     }
   }
 }
+
+

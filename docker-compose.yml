@@ -29,10 +29,8 @@ services:
     image: "cassandra:latest"
     ports:
       - "9042:9042"
-    environment:
-      CASSANDRA_PASSWORD: "password"
     healthcheck:
-      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+      test: ["CMD-SHELL", "ss -tlpn '( sport = :9042 )' | grep LISTEN || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 10
