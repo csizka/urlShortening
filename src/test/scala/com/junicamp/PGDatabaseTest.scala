@@ -10,17 +10,10 @@ import scala.util.Random
 
 object PGUrlShorteningTests extends TestSuite{
   val random = new Random(42)
-  
-  def clearTable(db: DatabasePostgres): Unit = {
-    val query = s"TRUNCATE TABLE ${db.tableName};"
-    val statement = db.conn.prepareStatement(query)
-    statement.executeUpdate()
-    statement.close()
-  }
 
-  def withTable (action: DatabasePostgres => Unit): Unit = {
+  def withTable (action: Database => Unit): Unit = {
     DatabasePostgres.withDatabase { db => 
-      clearTable(db)
+      db.truncateUrlTable()
       action(db)
     }
   }

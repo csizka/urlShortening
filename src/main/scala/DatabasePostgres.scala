@@ -78,6 +78,13 @@ case class DatabasePostgres(conn: Connection, tableName: String) extends Databas
   override def close(): Unit = {
     conn.close()
   }
+
+  override def truncateUrlTable(): Unit = {
+    val query = s"TRUNCATE TABLE ${tableName};"
+    val statement = conn.prepareStatement(query)
+    statement.executeUpdate()
+    statement.close()
+  }
 }
 
 object DatabasePostgres extends MkDatabase {

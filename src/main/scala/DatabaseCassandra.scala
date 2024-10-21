@@ -67,6 +67,10 @@ case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Databa
 
   override def close(): Unit =
     sess.close()
+
+  override def truncateUrlTable(): Unit = {
+    sess.execute(s"TRUNCATE TABLE ${tableName};")
+  }
 }
 
 object DatabaseCassandra extends MkDatabase {

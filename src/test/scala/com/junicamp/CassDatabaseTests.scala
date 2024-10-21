@@ -11,13 +11,9 @@ import scala.util.Random
 object CassUrlShorteningTests extends TestSuite{
   val random = new Random(42)
 
-    def clearTable(db: DatabaseCassandra): Unit = {
-    db.sess.execute(s"TRUNCATE TABLE ${db.tableName};")
-  }
-
-  def withTable (action: DatabaseCassandra => Unit): Unit = {
+  def withTable (action: Database => Unit): Unit = {
     DatabaseCassandra.withDatabase { db => 
-      clearTable(db)
+      db.truncateUrlTable()
       action(db)
     }
   }

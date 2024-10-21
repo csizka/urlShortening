@@ -4,6 +4,7 @@ trait Database {
   def lookup(handle: String): Option[String]
   def getOrInsertHandle(url: String): Either[String, String]
   def close(): Unit
+  def truncateUrlTable(): Unit
 }
 
 trait MkDatabase {
