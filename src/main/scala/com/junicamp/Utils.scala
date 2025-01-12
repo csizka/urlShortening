@@ -1,11 +1,12 @@
 package com.junicamp
 
+import io.lemonlabs.uri.*
 import io.seruco.encoding.base62.Base62
 import org.apache.commons.codec.digest.DigestUtils
-import io.lemonlabs.uri._
-import scala.util.Random
+
+import java.sql.{Array as SqlArray, *}
 import scala.collection.mutable.HashMap
-import java.sql.{Array => SqlArray, *}
+import scala.util.Random
 
 
 object Utils {

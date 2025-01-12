@@ -18,7 +18,6 @@ lazy val root = project
       "com.lihaoyi" %% "scalatags" % "0.13.1",
       "com.lihaoyi" %% "cask" % "0.9.4",
       "io.lemonlabs" %% "scala-uri" % "4.0.3",
-
       "com.lihaoyi" %% "utest" % "0.8.4" % "test",
       ),
 

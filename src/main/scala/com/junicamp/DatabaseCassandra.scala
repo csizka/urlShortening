@@ -1,12 +1,11 @@
 package com.junicamp
 
-import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.{CqlIdentifier, CqlSession}
 import com.datastax.oss.driver.api.core.cql.*
+import io.lemonlabs.uri.*
 
-import io.lemonlabs.uri._
-import java.util.Calendar
 import java.net.InetSocketAddress
-import com.datastax.oss.driver.api.core.CqlIdentifier
+import java.util.Calendar
 
 case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Database {
 

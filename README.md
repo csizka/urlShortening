@@ -1,6 +1,6 @@
 # URL Shortener
 
-This project contains a conatinerized URL-Shortening app, 2 optional Databases(Cassandra and Postgres) and their data migration files + tests.
+This project contains a containerized URL-Shortening app, 2 optional Databases(Cassandra and Postgres) and their data migration files + tests.
 
 ## Running
 

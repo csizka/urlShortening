@@ -1,7 +1,8 @@
 package com.junicamp
 
-import com.junicamp.DatabasePostgres
-import scalatags.Text.all._
+import com.junicamp.Main.initialize
+import com.junicamp.{Database, DatabaseCassandra, Utils}
+import scalatags.Text.all.*
 
 object Main extends cask.MainRoutes {
   override def host = "0.0.0.0"

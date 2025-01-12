@@ -1,9 +1,10 @@
 package com.junicamp
 
-import java.sql.{Array => SqlArray, *}
-import io.lemonlabs.uri._
-import java.util.Calendar
 import com.junicamp.Main.db
+import io.lemonlabs.uri.*
+
+import java.sql.{Array as SqlArray, *}
+import java.util.Calendar
 
 
 case class DatabasePostgres(conn: Connection, tableName: String) extends Database {

@@ -1,5 +1,7 @@
 package com.junicamp
 
+import com.junicamp.Secret
+
 case class DatabaseConfig(
   host: String,
   port: Int, 
