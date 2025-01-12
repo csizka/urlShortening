@@ -4,7 +4,7 @@ import io.lemonlabs.uri._
 
 object UtilTests extends TestSuite {
 
-  def parseUrlShouldWorkFor(inputRawUrl: String, expectedRawUrl: String) = {
+  def parseUrlShouldWorkFor(inputRawUrl: String, expectedRawUrl: String): Unit = {
     val actual = Utils.parseUrl(inputRawUrl)
     val expected = Url.parse(expectedRawUrl)
     assert(actual.contains(expected))

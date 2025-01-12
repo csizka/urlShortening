@@ -5,6 +5,8 @@ import io.seruco.encoding.base62.Base62
 import org.apache.commons.codec.digest.DigestUtils
 
 import java.sql.{Array as SqlArray, *}
+import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.collection.mutable.HashMap
 import scala.util.Random
 
@@ -27,6 +29,7 @@ object Utils {
     parsedUrl
   }
 
+  @tailrec
   def stringGenerator(n: Int, set: Set[String]): Set[String] = {
     val rand = new Random
     val charSet = ('a' to 'z').toVector ++ ('A' to 'Z').toVector ++ ('0' to '9').toVector
@@ -65,14 +68,15 @@ object Utils {
 
   /* Found collisions at (1472600.com,1343617.com)*/
   def findCollision(): (String, String) = {
-    val handles = new HashMap[String, String]
+    val handles = new mutable.HashMap[String, String]
     
+    @tailrec
     def findCollisionHelper(ix: Long): (String, String) = {
       val data = s"${ix}.com"
       val hash = Utils.encodeUrl(data)
 
       handles.get(hash) match {
-        case None => handles.addOne((hash -> data)); findCollisionHelper(ix + 1)
+        case None => handles.addOne(hash -> data); findCollisionHelper(ix + 1)
         case Some(otherData) => (data, otherData)
       }
     }
@@ -84,9 +88,10 @@ object Utils {
     * 3M strings: ListBuffer((1343617.com,1472600.com), (314415.com,2235669.com), (1281267.com,2601850.com), (2532640.com,2864459.com))
     *  */
   def findCollisionsV2(n: Int): List[(String, String)] = {
-    val handles = new HashMap[String, List[String]]
+    val handles = new mutable.HashMap[String, List[String]]
     val collisions = new scala.collection.mutable.ListBuffer[(String, String)]
 
+    @tailrec
     def findCollisionHelper(ix: Long): List[(String, String)] = {
       val data = s"${ix}.com"
       val hash = Utils.encodeUrl(data)
@@ -94,12 +99,11 @@ object Utils {
 
       (canStop, handles.get(hash)) match {
         case (true, _) => collisions.toList
-        case (_, None) => handles.addOne((hash -> List(data))); findCollisionHelper(ix + 1)
-        case (_, Some(otherData)) => {
-          handles.addOne((hash -> (data +: otherData)))
+        case (_, None) => handles.addOne(hash -> List(data)); findCollisionHelper(ix + 1)
+        case (_, Some(otherData)) => 
+          handles.addOne(hash -> (data +: otherData))
           otherData.map( collidingData => collisions.addOne((collidingData, data)))
           findCollisionHelper(ix + 1)
-        }
       }
     }
     findCollisionHelper(0)

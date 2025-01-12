@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: "password"
     healthcheck:
       test: pg_isready --dbname postgres --username postgres
-      interval: 5s
+      interval: 50s
       timeout: 5s
       retries: 10
 
@@ -31,7 +31,7 @@ services:
       - "9042:9042"
     healthcheck:
       test: ["CMD-SHELL", "ss -tlpn '( sport = :9042 )' | grep LISTEN || exit 1"]
-      interval: 5s
+      interval: 50s
       timeout: 5s
       retries: 10
 

@@ -6,14 +6,16 @@ import io.lemonlabs.uri.*
 
 import java.net.InetSocketAddress
 import java.util.Calendar
+import scala.annotation.tailrec
 
 case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Database {
 
   import DatabaseCassandra.*
 
-  private val selectStatement = sess.prepare(s"SELECT url FROM ${tableName} WHERE handle = :handle")
+  private val selectStatement: PreparedStatement = sess.prepare(s"SELECT url FROM ${tableName} WHERE handle = :handle")
   //IF NOT EXISTS Inserts a new row of data if no rows match the PRIMARY KEY value(s).
-  private val insertStatement = sess.prepare(s"INSERT INTO ${tableName} (handle, url, timestamp) VALUES (:handle, :url, :timestamp) IF NOT EXISTS")
+  private val insertStatement: PreparedStatement = 
+    sess.prepare(s"INSERT INTO ${tableName} (handle, url, timestamp) VALUES (:handle, :url, :timestamp) IF NOT EXISTS")
 
   //returns a URL from the database that is associated with the given handle if there is one.
   override def lookup(handle: String): Option[String] = {
@@ -28,7 +30,7 @@ case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Databa
     val startHandle = Utils.encodeUrl(url)
 
       def getOrInsertHandle(handle: String, url: String): Either[String, String] = {
-        val timestamp = java.time.Instant.now().getEpochSecond()
+        val timestamp = java.time.Instant.now().getEpochSecond
 
         lookup(handle).fold{
           val boundInsert = insertStatement.bind().setString("handle", handle).setString("url", url).setQueryTimestamp(timestamp)
@@ -48,10 +50,11 @@ case class DatabaseCassandra(sess: CqlSession, tableName: String) extends Databa
   def findHandle(url: String): Option[String] = {
     val startHandle = Utils.encodeUrl(url)
 
+      @tailrec
       def findHandle(handle: String, url: String): Option[String] = {
         val boundStatement = selectStatement.bind().setString("handle", handle)
         val resSet = sess.execute(boundStatement).iterator()
-        val handleExistsInDb = resSet.hasNext()
+        val handleExistsInDb = resSet.hasNext
         if (handleExistsInDb && resSet.next().getString("url") == url) {
           Some(handle)
         } else if (handleExistsInDb) {
