@@ -6,7 +6,7 @@ This project contains a containerized URL-Shortening app, 2 optional Databases(C
 
 Run the app with: `docker compose up app` (this will run both databases, but the app will use Cassandra)
 It will listen on: http://localhost:8080
-To run the tests: `docker compose up tests`
+To run the tests: `docker compose up test`
 
 ## Hashing algorithm
 

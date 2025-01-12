@@ -421,7 +421,7 @@
 2024-10-04 13:50:15.914 CEST [53360] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.303 s, sync=0.010 s, total=0.345 s; sync files=2, longest=0.009 s, average=0.005 s; distance=15 kB, estimate=48 kB; lsn=0/21EC178, redo lsn=0/21EC140
 2024-10-04 14:37:46.707 CEST [174783] ERROR:  type "varcher" does not exist at character 43
 2024-10-04 14:37:46.707 CEST [174783] STATEMENT:  CREATE TABLE IF NOT EXISTS url (
-	  handle VARCHER(7) PRIMARY KEY,
+	  handle VARCHAR(7) PRIMARY KEY,
 	  url VARCHAR(2000) NOT NULL
 	);
 2024-10-04 14:39:26.328 CEST [53360] LOG:  checkpoint starting: time
