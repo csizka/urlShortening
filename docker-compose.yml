@@ -7,9 +7,9 @@ services:
       POSTGRES_PASSWORD: "password"
     healthcheck:
       test: pg_isready --dbname postgres --username postgres
-      interval: 50s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 15
 
   pg-migrate:
     image: "migrate/migrate:v4.18.1"
@@ -31,9 +31,9 @@ services:
       - "9042:9042"
     healthcheck:
       test: ["CMD-SHELL", "ss -tlpn '( sport = :9042 )' | grep LISTEN || exit 1"]
-      interval: 50s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 15
 
   cassandra-keyspace:
     image: "cassandra:latest"
