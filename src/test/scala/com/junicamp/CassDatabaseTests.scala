@@ -61,19 +61,14 @@ object CassUrlShorteningTests extends TestSuite{
         withTable { db =>  
           val (lhsUrl, rhsUrl) = ("4701251","2946054")
           Utils.encodeUrl(lhsUrl) ==> Utils.encodeUrl(rhsUrl)
+
           db.getOrInsertHandle(lhsUrl)
           db.getOrInsertHandle(rhsUrl)
           val getLhsHandleRes = db.getOrInsertHandle(lhsUrl)
           val getRhsHandleRes = db.getOrInsertHandle(rhsUrl)
-          
-          val actualUrls = for {
-            lhsHandle <- getLhsHandleRes.toOption
-            rhsHandle <- getRhsHandleRes.toOption
-            lhsUrlFromDb <- db.lookup(lhsHandle)
-            rhsUrlFromDb <- db.lookup(rhsHandle)
-          } yield (lhsUrl, rhsUrl)
 
-          actualUrls.contains(lhsUrl -> rhsUrl)     
+          getRhsHandleRes ==> Left(Utils.encodeUrl(Utils.encodeUrl(lhsUrl)))
+          getLhsHandleRes ==> Left(Utils.encodeUrl(rhsUrl))
         }
       }
     }
