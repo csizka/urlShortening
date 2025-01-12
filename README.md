@@ -18,4 +18,4 @@ The handle and the original URL are stored in a table where the handle is the pr
   
 ## Collision handling
 
-When trying to insert a handle - URL pair, if a certian handle is present in the table with a different URL, the handle is hashed again until finding an unoccupied handle. 
+When trying to insert a handle - URL pair, if a certain handle is present in the table with a different URL, the handle is hashed again until finding an unoccupied handle. 
